@@ -1,14 +1,16 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentsComponent } from './components/teacher/students/students.component';
-import { TeacherBarComponent } from './components/teacher/shared/teacher-bar/teacher-bar.component';
-import { AddStudentComponent } from './components/teacher/add-student/add-student.component';
+import { StudentsComponent } from './components/teacher-dashboard/students/students.component';
+import { TeacherBarComponent } from './components/teacher-dashboard/shared/teacher-bar/teacher-bar.component';
+import { AddStudentComponent } from './components/teacher-dashboard/add-student/add-student.component';
 import { StudentHomeComponent } from './components/student-home/student-home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TeacherDashboardComponent } from './components/teacher-dashboard/teacher-dashboard.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,14 +19,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TeacherBarComponent,
     AddStudentComponent,
     StudentHomeComponent,
-    LoginComponent
+    LoginComponent,
+    TeacherDashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
