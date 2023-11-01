@@ -21,7 +21,7 @@ export class AuthService {
         if (token) {
           localStorage.setItem('access_token', token);
           const decodedToken = this.jwtHelper.decodeToken(token);
-          if (decodedToken.userType === 'admin') {
+          if (decodedToken.userType === 'teacher') {
             setTimeout(() => {
               this.router.navigate(['/teacher-dashboard']);
             }, 1000);

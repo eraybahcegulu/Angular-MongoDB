@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 module.exports = {
   connect: function() {
-    mongoose.connect('mongodb://127.0.0.1:27017/StudentManagementSystem', { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect('mongodb://127.0.0.1:27017/StudentManagementSystem');
     mongoose.connection.on('connected', () => {
       console.log('Connected to MongoDB');
     });

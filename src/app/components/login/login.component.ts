@@ -52,15 +52,13 @@ export class LoginComponent {
 
   private handleLoginError(error: HttpErrorResponse): void {
     if (error.status === 401) {
-      this.loginMessage = 'Invalid email or password';
+      this.loginMessage = 'Invalid email or password.';
       this.loginForm.controls['password'].reset();
     } else {
       console.error('Login failed', error);
       this.loginMessage = 'Login failed';
     }
     this.loginMessageType = 'danger';
-
-
     setTimeout(() => {
       this.loginMessage = '';
       this.loginMessageType = '';

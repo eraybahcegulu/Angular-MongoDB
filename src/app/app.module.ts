@@ -3,20 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentsComponent } from './components/teacher-dashboard/students/students.component';
-import { TeacherBarComponent } from './components/teacher-dashboard/shared/teacher-bar/teacher-bar.component';
+import { ViewStudentsComponent } from './components/teacher-dashboard/view-students/view-students.component';
 import { AddStudentComponent } from './components/teacher-dashboard/add-student/add-student.component';
 import { StudentHomeComponent } from './components/student-home/student-home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDashboardComponent } from './components/teacher-dashboard/teacher-dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
-    StudentsComponent,
-    TeacherBarComponent,
+    ViewStudentsComponent,
     AddStudentComponent,
     StudentHomeComponent,
     LoginComponent,
@@ -27,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent],

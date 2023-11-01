@@ -7,8 +7,8 @@ async function getUserInfo(req, res) {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const student = decodedToken.userType === 'teacher' ? await Student.findById(decodedToken.userId) : null;
-    const teacher = decodedToken.userType === 'student' ? await Teacher.findById(decodedToken.userId) : null;
+    const student = decodedToken.userType === 'student' ? await Student.findById(decodedToken.userId) : null;
+    const teacher = decodedToken.userType === 'teacher' ? await Teacher.findById(decodedToken.userId) : null;
 
     if (!student && !teacher) {
       return res.status(404).json({ status: 404, message: 'User not found.' });
