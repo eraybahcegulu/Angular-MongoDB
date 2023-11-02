@@ -6,15 +6,17 @@ require('dotenv').config();
 
 const db = require('./src/database/db');
 
-const loginUser = require('./src/routes/loginRoutes');
-const userRoutes = require('./src/routes/userInfoRoutes');
+const loginRoutes = require('./src/routes/loginRoutes');
+const userInfoRoutes = require('./src/routes/userInfoRoutes');
+const studentRoutes = require('./src/routes/studentRoutes');
 
 db.connect();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(loginUser);
-app.use(userRoutes);
+app.use(loginRoutes);
+app.use(userInfoRoutes);
+app.use(studentRoutes);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
