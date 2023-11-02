@@ -12,7 +12,7 @@ async function loginUser(req, res) {
       return res.status(200).json({ message: 'Login successful.', token: token });
     }
 
-    return res.status(401).json();
+    return res.status(401).json({message: 'Invalid email or password'});
   } catch (error) {
     console.error('Error during login', error);
     res.status(500).json({ status: 500, message: 'Login failed.' });

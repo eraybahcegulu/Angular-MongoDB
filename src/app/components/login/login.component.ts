@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HandlerService } from '../../services/handlers/loginHandler.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +16,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private handlerService: HandlerService,
 
   ) {
     this.loginForm = this.formBuilder.group({
@@ -31,37 +32,27 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return;
     }
-
+  
     this.authService.login(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value
     ).subscribe(
       (response) => {
-        this.handleLoginResponse(response);
+        const loginResponse = this.handlerService.handleLoginResponse(response);
+        this.loginMessage = loginResponse.message;
+        this.loginMessageType = loginResponse.type;
       },
       (error) => {
-        this.handleLoginError(error);
+        const loginError = this.handlerService.handleLoginError(error);
+        this.loginMessage = loginError.message;
+        this.loginMessageType = loginError.type;
+        this.loginForm.controls['password'].reset();
+  
+        setTimeout(() => {
+          this.loginMessage = '';
+          this.loginMessageType = '';
+        }, 3000);
       }
     );
-  }
-
-  private handleLoginResponse(response: any): void {
-    this.loginMessage = response.message;
-    this.loginMessageType = 'success';
-  }
-
-  private handleLoginError(error: HttpErrorResponse): void {
-    if (error.status === 401) {
-      this.loginMessage = 'Invalid email or password.';
-      this.loginForm.controls['password'].reset();
-    } else {
-      console.error('Login failed', error);
-      this.loginMessage = 'Login failed';
-    }
-    this.loginMessageType = 'danger';
-    setTimeout(() => {
-      this.loginMessage = '';
-      this.loginMessageType = '';
-    }, 2000);
   }
 }

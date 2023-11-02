@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../../services/student.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HandlerService } from '../../../services/handlers/addStudentHandler.service';
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -15,7 +16,8 @@ export class AddStudentComponent{
 
   constructor(
     private studentService: StudentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private handlerService: HandlerService
   ) {
 
     this.addStudentForm = this.formBuilder.group({
@@ -45,35 +47,24 @@ export class AddStudentComponent{
 
     this.studentService.addStudent(studentData).subscribe(
       (response) => {
-        this.handleAddStudentResponse(response);
+        const addStudentResponse = this.handlerService.handleAddStudentResponse(response);
+        this.addStudentMessage = addStudentResponse.message;
+        this.addStudentMessageType = addStudentResponse.type;
+        setTimeout(() => {
+          this.addStudentMessage = '';
+          this.addStudentMessageType = '';
+        }, 3000);
       },
       (error) => {
-        this.handleAddStudentError(error);
+        const addStudentError = this.handlerService.handleAddStudentError(error);
+        this.addStudentMessage = addStudentError.message;
+        this.addStudentMessageType = addStudentError.type;
+        setTimeout(() => {
+          this.addStudentMessage = '';
+          this.addStudentMessageType = '';
+        }, 3000);
       }
     );
-  }
-
-  private handleAddStudentResponse(response: any): void {
-    this.addStudentMessage = response.message;
-    this.addStudentMessageType = 'success';
-    this.addStudentForm.reset();
-    setTimeout(() => {
-      this.addStudentMessage = '';
-      this.addStudentMessageType = '';
-    }, 3000);
-  }
-
-  private handleAddStudentError(error: HttpErrorResponse): void {
-    if (error.status === 400) {
-      this.addStudentMessage = error.error.message;
-      this.addStudentMessageType = 'danger';
-    } else {
-      console.error('Registration failed', error);
-    }
-    setTimeout(() => {
-      this.addStudentMessage = '';
-      this.addStudentMessageType = '';
-    }, 3000);
   }
 
   editErrors(inputs: any): boolean {
