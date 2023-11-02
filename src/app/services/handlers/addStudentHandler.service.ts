@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class HandlerService {
+export class HandlerAddStudentService {
   handleAddStudentResponse(response: any): { message: string, type: string } {
     return {
       message: response.message,
@@ -15,7 +15,7 @@ export class HandlerService {
   handleAddStudentError(error: HttpErrorResponse): { message: string, type: string } {
     if (error.status === 400) {
       return {
-        message: 'This Student No is already registered.',
+        message: error.error.message,
         type: 'danger',
       };
     } else {

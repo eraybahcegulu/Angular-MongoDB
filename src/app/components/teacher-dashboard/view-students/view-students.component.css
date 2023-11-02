@@ -1,0 +1,40 @@
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+
+.table-input {
+    width: 120px;
+    padding: 10px;
+    border: 1px solid #a3a2a2;
+    border-radius: 5px;
+}
+
+.numbers {
+    text-align: center;
+    width: 55px;
+}
+
+tr {
+    text-align: center;
+    vertical-align: middle;
+}
+
+mat-error {
+    font-size: 11px;
+    color: red;
+}
+
+.table-input:focus {
+    outline: none;
+}
+
+.success-border {
+    border: 2px solid green;
+}
+
+.error-border {
+    border: 2px solid red;
+}

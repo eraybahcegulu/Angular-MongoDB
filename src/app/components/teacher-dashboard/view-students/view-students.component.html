@@ -25,17 +25,20 @@
                         (input)="formatInput($any($event).target)"
                         aria-labelledby="paginationInputLabel paginationDescription"
                         style="text-align: center; width: 3.0rem"/>
-                    <span id="paginationDescription" class="col-form-label text-nowrap px-2"> of {{pages.length}}</span>
+                    <span id="paginationDescription" class="col-form-label text-nowrap px-2"> of {{pages.length}} </span>
                 </div>
             </li>
         </ng-template>
     </ngb-pagination>
 
+    <div class="d-flex justify-content-center">
     <table class="table table-bordered bordered-light" >
         <thead>
-            <tr class="table-dark" align="center" valign="middle">
+            <tr class="table-dark">
+                <th>ID</th>
                 <th>No</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Midterm Exam</th>
@@ -45,44 +48,194 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="table-secondary" *ngFor="let student of getStudentsOnCurrentPage()" align="center" valign="middle">
-                <td>{{ student.no }}</td>
-                <td>{{ student.email }}</td>
-                <td>{{ student.name }}</td>
-                <td>{{ student.surname }}</td>
-                <td>{{ student.midterm }}</td>
-                <td>{{ student.final }}</td>
-                <td>{{ student.absenteeism }}</td>
+            <tr class="table-secondary" *ngFor="let student of getStudentsOnCurrentPage()">
+                <td>{{ student._id }}</td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else noField">
+                        {{ student.no }}
+                    </ng-container>
+                    <ng-template #noField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.no === null || student.no === undefined"> <strong> Student no required </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.no === null || student.no === undefined) ? 'success-border': 'error-border'"
+                        #inputNo class="table-input no-spinners" type="number" [(ngModel)]="student.no" maxlength="15" >
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else emailField">
+                        {{ student.email }}
+                    </ng-container>
+                    <ng-template #emailField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.email.trim().length < 1"> <strong> Student email required </strong></mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.email.trim().length < 1) ? 'success-border': 'error-border'"
+                        class="table-input" type="text" [(ngModel)]="student.email" maxlength="40">
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else passwordField">
+                        {{ student.password }}
+                    </ng-container>
+                    <ng-template #passwordField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.password.trim().length < 1"> <strong> Student password required </strong></mat-error>
+                            </span>
+                        </div>
+                        <input
+                        [ngClass]="!(student.password.trim().length < 1) ? 'success-border': 'error-border'"
+                        class="table-input" type="text" [(ngModel)]="student.password" maxlength="20">
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else nameField">
+                        {{ student.name }}
+                    </ng-container>
+                    <ng-template #nameField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.name.trim().length < 1"> <strong> Student name required </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.name.trim().length < 1) ? 'success-border': 'error-border'"
+                        class="table-input" type="text" [(ngModel)]="student.name" maxlength="20">
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else surnameField">
+                        {{ student.surname }}
+                    </ng-container>
+                    <ng-template #surnameField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.surname.trim().length < 1"> <strong> Student surname required </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.surname.trim().length < 1) ? 'success-border': 'error-border'"
+                        class="table-input" type="text" [(ngModel)]="student.surname" maxlength="20">
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else midtermField">
+                        {{ student.midterm }}
+                    </ng-container>
+                    <ng-template #midtermField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.midterm > 100"> <strong> Midterm can be max 100 </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.midterm > 100) ? 'success-border': 'error-border'"
+                        class="table-input no-spinners numbers" type="number" [(ngModel)]="student.midterm" maxlength="3">
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else finalField">
+                        {{ student.final }}
+                    </ng-container>
+                    <ng-template #finalField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.final > 100"> <strong> Final can be max 100 </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input 
+                        [ngClass]="!(student.final > 100) ? 'success-border' : 'error-border'"
+                        class="table-input no-spinners numbers" type="number" [(ngModel)]="student.final"  >
+                    </ng-template>
+                </td>
+                <td>
+                    <ng-container *ngIf="!student.isEditing; else absenteeismField">
+                        {{ student.absenteeism }}
+                    </ng-container>
+                    <ng-template #absenteeismField>
+                        <div>
+                            <span>
+                                <mat-error *ngIf="student.absenteeism > 100"> <strong> Absenteeism can be max 100 </strong> </mat-error>
+                            </span>
+                        </div>
+                        <input
+                        [ngClass]="!(student.absenteeism > 100) ? 'success-border': 'error-border'"
+                        class="table-input no-spinners numbers" type="number" [(ngModel)]="student.absenteeism" maxlength="3">
+                    </ng-template>
+                </td>
                 <td>
                     <div class="btn-group" role="group" style="display:flex; justify-content:space-between">
-                        <a type="button" class="btn btn-success">Edit</a>
-                        <a type="button" class="btn btn-primary">Message</a>
-                        <a type="button" class="btn btn-danger" (click)="setSelectedStudent(student._id)" data-toggle="modal" data-target="#deleteStudentModal">Delete</a>
+                    <ng-container *ngIf="!student.isEditing; else editField">
+                        <a type="button" class="btn btn-primary" (click)="startEditing(student)">Edit</a>
+                        <a type="button" class="btn btn-info">Message</a>
+                        <a type="button" class="btn btn-danger" (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname)" data-toggle="modal" data-target="#deleteStudentModal">Delete</a>
+                    </ng-container>
+                    <ng-template #editField>
+                        <button type="button" class="btn btn-success" (click)="saveEditedStudent(student)" [disabled]="editErrors(student)" >Save</button>
+                    </ng-template>
                     </div>
                 </td>
             </tr>
-            <tr *ngIf="students.length === 0" align="center" valign="middle">
-                <td colspan="8">Student not available</td>
+            <tr *ngIf="students.length === 0">
+                <td colspan="10" >
+                     <p class="alert alert-danger"> 
+                        <strong> Student not available </strong>
+                    </p> 
+                </td>
               </tr>
         </tbody>
     </table>
+    </div>
+    <div class="updateStudentMessage" *ngIf="updateStudentMessage"
+[ngClass]="updateStudentMessageType === 'success' ? 'alert alert-success' : (updateStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
+<strong>{{ updateStudentMessage }}</strong>
+</div>
+
+<div class="deleteStudentMessage" *ngIf="deleteStudentMessage"
+[ngClass]="deleteStudentMessageType === 'success' ? 'alert alert-success' : (deleteStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
+<strong>{{ deleteStudentMessage }}</strong>
+</div>
 </div>
 
 <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
+        <h5 class="modal-title" id="deleteStudentModalLabel"> <strong> Delete Student </strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-         Are you sure you want to delete this student?
+        <h5> <strong> Student information </strong> </h5>
+         <ul>
+            <li>
+                <strong>ID: </strong> {{selectedStudentId}}
+            </li>
+            <li>
+                <strong>No: </strong> {{selectedStudentNo}}
+            </li>
+            <li>
+                <strong>Email: </strong> {{selectedStudentEmail}}
+            </li>
+            <li>
+                <strong>Name: </strong> {{selectedStudentName}}
+            </li>
+            <li>
+                <strong>Surname: </strong> {{selectedStudentSurname}}
+            </li>
+         </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" (click)="confirmDelete(selectedStudent)">Delete</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete(selectedStudentId)">Delete</button>
       </div>
     </div>
   </div>

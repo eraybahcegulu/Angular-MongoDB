@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { HandlerService } from '../../services/handlers/loginHandler.service';
+import { HandlerLoginService } from '../../services/handlers/loginHandler.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,7 +16,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private handlerService: HandlerService,
+    private handlerLoginService: HandlerLoginService,
 
   ) {
     this.loginForm = this.formBuilder.group({
@@ -32,22 +32,22 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return;
     }
-  
+
     this.authService.login(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value
     ).subscribe(
       (response) => {
-        const loginResponse = this.handlerService.handleLoginResponse(response);
+        const loginResponse = this.handlerLoginService.handleLoginResponse(response);
         this.loginMessage = loginResponse.message;
         this.loginMessageType = loginResponse.type;
       },
       (error) => {
-        const loginError = this.handlerService.handleLoginError(error);
+        const loginError = this.handlerLoginService.handleLoginError(error);
         this.loginMessage = loginError.message;
         this.loginMessageType = loginError.type;
         this.loginForm.controls['password'].reset();
-  
+
         setTimeout(() => {
           this.loginMessage = '';
           this.loginMessageType = '';

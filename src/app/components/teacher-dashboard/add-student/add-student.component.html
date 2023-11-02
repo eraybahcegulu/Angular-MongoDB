@@ -12,32 +12,45 @@
 
                             <input placeholder="Name" #inputName [ngClass]="{'success-border': !formControls['name'].hasError('required') && !formControls['name'].hasError('minlength') && inputName.value.trim().length > 2}" 
                             type="text" formControlName="name" class="form-control" id="name" required maxlength="20">
-                            <div class="text-danger" *ngIf="formControls['name'].hasError('required') || formControls['name'].hasError('minlength') || !(inputName.value.trim().length > 2)" >Name required and must be at least 3 characters </div>
+                            <div class="text-danger" *ngIf="formControls['name'].hasError('required') || formControls['name'].hasError('minlength') || !(inputName.value.trim().length > 2)" >
+                                <span> <strong> Name required and must be at least 3 characters </strong></span>
+                                 
+                            </div>
                         </div>
                         <div class="mb-3">
 
                             <input placeholder="Surname" #inputSurname [ngClass]="{'success-border': !formControls['surname'].hasError('required') && !formControls['surname'].hasError('minlength') && inputSurname.value.trim().length > 2}" 
-                            type="text" formControlName="surname" class="form-control" id="surname" required>
-                            <div class="text-danger" *ngIf="formControls['surname'].hasError('required') || formControls['surname'].hasError('minlength') || !(inputSurname.value.trim().length > 2) ">Surname required and must be at least 3 characters </div>
+                            type="text" formControlName="surname" class="form-control" id="surname" required maxlength="20">
+                            <div class="text-danger" *ngIf="formControls['surname'].hasError('required') || formControls['surname'].hasError('minlength') || !(inputSurname.value.trim().length > 2) ">
+                                <span> <strong>  Surname required and must be at least 3 characters </strong> </span>
+                            </div>
                         </div>
                         <div class="mb-3">
 
                             <input placeholder="Email" #inputEmail [ngClass]="{'success-border': !formControls['email'].hasError('required') && !formControls['email'].hasError('minlength') && !formControls['email'].hasError('email') && inputEmail.value.trim().length > 2}" 
-                            type="text" formControlName="email" class="form-control" id="email" required>
-                            <div class="text-danger" *ngIf="formControls['email'].hasError('required') || formControls['email'].hasError('minlength') || formControls['email'].hasError('email') || !(inputEmail.value.trim().length > 2) ">Email required , correct format and must be at least 3 characters </div>
+                            type="text" formControlName="email" class="form-control" id="email" required maxlength="40">
+                            <div class="text-danger" *ngIf="formControls['email'].hasError('required') || formControls['email'].hasError('minlength') || formControls['email'].hasError('email') || !(inputEmail.value.trim().length > 2) ">
+                                <span> <strong> Email required , correct format and must be at least 3 characters  </strong> </span> 
+                            </div>
                         </div>
                         <div class="mb-3">
 
                             <input placeholder="No" #inputStudentNumber [ngClass]="{'success-border': !formControls['no'].hasError('required') && !formControls['no'].hasError('pattern')}"
                             type="number" formControlName="no" class="form-control no-spinners" id="no" required>
-                            <div class="text-danger" *ngIf="formControls['no'].hasError('required')">Student No required and only number</div>
-                            <div class="text-danger" *ngIf="formControls['no'].hasError('pattern')">Student Number must be a between 3-15 digits</div>
+                            <div class="text-danger" *ngIf="formControls['no'].hasError('required')">
+                                <span> <strong> Student No required and only number </strong> </span> 
+                            </div>
+                            <div class="text-danger" *ngIf="formControls['no'].hasError('pattern')">
+                                <span> <strong> Student Number must be a between 3-15 digits </strong> </span>
+                            </div>
                         </div>
                         <div class="mb-3">
 
                             <input placeholder="Password" #inputPassword [ngClass]="{'success-border': !formControls['password'].hasError('required') && !formControls['password'].hasError('minlength') && inputPassword.value.trim().length > 5}"
                             type="password" formControlName="password" class="form-control" id="password" required maxlength="20">
-                            <div class="text-danger" *ngIf="formControls['password'].hasError('required') || formControls['password'].hasError('minlength') || !(inputPassword.value.trim().length > 5) "> Password required and must be at least 6 characters </div>
+                            <div class="text-danger" *ngIf="formControls['password'].hasError('required') || formControls['password'].hasError('minlength') || !(inputPassword.value.trim().length > 5) ">
+                                <span> <strong> Password required and must be at least 6 characters </strong> </span>
+                            </div>
 
                         </div>
                         <button type="submit" class="btn btn-primary mb-3" [disabled]="editErrors(inputName) || editErrors(inputSurname) || editErrors(inputEmail) || editErrors(inputStudentNumber) || editErrors(inputPassword) || addStudentForm.invalid">Add</button>

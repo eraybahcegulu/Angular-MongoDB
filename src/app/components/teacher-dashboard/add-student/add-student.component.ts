@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../../services/student.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { HandlerService } from '../../../services/handlers/addStudentHandler.service';
+import { HandlerAddStudentService } from '../../../services/handlers/addStudentHandler.service';
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -17,7 +16,7 @@ export class AddStudentComponent{
   constructor(
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private handlerService: HandlerService
+    private handlerAddStudentService: HandlerAddStudentService
   ) {
 
     this.addStudentForm = this.formBuilder.group({
@@ -47,7 +46,7 @@ export class AddStudentComponent{
 
     this.studentService.addStudent(studentData).subscribe(
       (response) => {
-        const addStudentResponse = this.handlerService.handleAddStudentResponse(response);
+        const addStudentResponse = this.handlerAddStudentService.handleAddStudentResponse(response);
         this.addStudentMessage = addStudentResponse.message;
         this.addStudentMessageType = addStudentResponse.type;
         setTimeout(() => {
@@ -56,7 +55,7 @@ export class AddStudentComponent{
         }, 3000);
       },
       (error) => {
-        const addStudentError = this.handlerService.handleAddStudentError(error);
+        const addStudentError = this.handlerAddStudentService.handleAddStudentError(error);
         this.addStudentMessage = addStudentError.message;
         this.addStudentMessageType = addStudentError.type;
         setTimeout(() => {

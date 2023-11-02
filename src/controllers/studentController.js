@@ -52,4 +52,35 @@ async function addStudent(req, res) {
     }
   }
 
-  module.exports = { getStudents , addStudent , deleteStudent};
+  async function updateStudent(req, res) {
+    const studentId = req.params.studentId;
+
+    const { no , email , password , name , surname , midterm , final , absenteeism} = req.body;
+  
+    try {
+      const existingStudent = await Student.findById(studentId);
+  
+      if (!existingStudent) {
+        return res.status(400).json({ message: 'Student not found.' });
+      }
+      existingStudent.no = no;
+      existingStudent.email = email;
+      existingStudent.password = password;
+      existingStudent.name = name;
+      existingStudent.surname = surname;
+      existingStudent.midterm = midterm;
+      existingStudent.final = final;
+      existingStudent.absenteeism = absenteeism;
+
+      const updatedStudent = await existingStudent.save();
+  
+      if (updatedStudent) {
+        return res.status(200).json({ message: 'Student updated successfully.' });
+      }
+    } catch (error) {
+      console.error('Error updating student', error);
+      res.status(500).json({ message: 'Error updating student', error: error.message });
+    }
+  }
+
+  module.exports = { getStudents , addStudent , deleteStudent , updateStudent};
