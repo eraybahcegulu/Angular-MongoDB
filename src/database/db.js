@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 module.exports = {
   connect: function() {
-    mongoose.connect('mongodb://127.0.0.1:27017/StudentManagementSystem');
+    mongoose.connect(process.env.MONGODB_URI);
     mongoose.connection.on('connected', () => {
       console.log('Connected to MongoDB');
     });
