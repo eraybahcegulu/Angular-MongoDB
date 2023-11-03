@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getUserInfo } = require('../controllers/userInfoController');
+const userInfoController= require('../controllers/userInfoController');
 
-router.get('/user-info', async (req, res) => {
-  getUserInfo(req, res);
-});
+router.get('/user-info', userInfoController.getUserInfo);
 
 module.exports = router;
