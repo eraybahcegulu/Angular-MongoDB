@@ -12,6 +12,7 @@ declare var $: any;
 export class ViewStudentsComponent implements OnInit {
 
   students: any[] = [];
+  filteredStudents: any[] = [];
   page = 1;
   pageSize = 5;
   selectedStudentId: any;
@@ -26,6 +27,7 @@ export class ViewStudentsComponent implements OnInit {
   updateStudentMessage: string = '';
   updateStudentMessageType: string = '';
 
+  searchText: string = '';
 
   constructor(
     private studentService: StudentService,
@@ -40,15 +42,62 @@ export class ViewStudentsComponent implements OnInit {
     });
   }
 
-  getStudentsOnCurrentPage() {
-    const startIndex = (this.page - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.students.slice(startIndex, endIndex);
-  }
-  selectPage(page: string) {
-    this.page = parseInt(page, 10) || 1;
+  getTotalPages(): number {
+    if (this.searchText) {
+      const totalFilteredStudents = this.filteredStudents.length;
+      return Math.ceil(totalFilteredStudents / this.pageSize);
+    } else {
+      const totalStudents = this.students.length;
+      return Math.ceil(totalStudents / this.pageSize);
+    }
   }
 
+  searchStudents(): void {
+    if (this.searchText) {
+      this.page = 1;
+      const searchTerms = this.searchText.toLowerCase().split(" ");
+      this.studentService.getStudents().subscribe((students: any[]) => {
+        this.students = students;
+        this.filteredStudents = this.students.filter(student => {
+          return searchTerms.every(term =>
+            student.name.toLowerCase().includes(term) ||
+            student.surname.toLowerCase().includes(term) ||
+            student.email.toLowerCase().includes(term) ||
+            student.no.toString().toLowerCase().includes(term)
+          );
+        });
+      });
+    } else {
+      this.filteredStudents = this.students;
+    }
+  }
+  
+  getStudentsOnCurrentPage() {
+    if (this.searchText) {
+      const startIndex = (this.page - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredStudents.slice(startIndex, endIndex);
+    } else {
+
+      const startIndex = (this.page - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.students.slice(startIndex, endIndex);
+    }
+
+  }
+  
+  selectPage(page: string) {
+    const newPage = parseInt(page, 10) || 1;
+    const totalPages = this.getTotalPages();
+    if (newPage >= 1 && newPage <= totalPages) {
+      this.page = newPage;
+    } else if (newPage > totalPages) {
+      this.page = totalPages;
+    } else {
+      this.page = 1;
+    }
+  }
+  
   formatInput(input: HTMLInputElement) {
     input.value = input.value.replace(FILTER_PAG_REGEX, '');
   }
@@ -65,8 +114,6 @@ export class ViewStudentsComponent implements OnInit {
   confirmDelete(selectedStudentId: string) {
     this.studentService.getStudents().subscribe((students: any[]) => {
       this.students = students;
-
-
       this.selectedStudentId = this.students.find(student => student._id === selectedStudentId);
       this.studentService.deleteStudent(selectedStudentId).subscribe(
         (response) => {
@@ -110,8 +157,7 @@ export class ViewStudentsComponent implements OnInit {
   }
 
   saveEditedStudent(student: any) {
-    this.studentService.getStudents().subscribe((students: any[]) => {
-      this.students = students;
+    
       student.isEditing = false;
 
       const updatedStudentData = {
@@ -133,23 +179,29 @@ export class ViewStudentsComponent implements OnInit {
           setTimeout(() => {
             this.updateStudentMessage = '';
             this.updateStudentMessageType = '';
-          }, 3000);
+          }, 4000);
         },
         (error) => {
+          this.searchText = '';
+          this.page = 1;
           const updateStudentError = this.handlerUpdateStudentService.handleUpdateStudentError(error);
           this.updateStudentMessage = updateStudentError.message;
           this.updateStudentMessageType = updateStudentError.type;
           setTimeout(() => {
             this.updateStudentMessage = '';
             this.updateStudentMessageType = '';
-          }, 3000);
-        },
-        () => {
+
+          }, 4000);
           this.studentService.getStudents().subscribe((students: any[]) => {
-            this.students = students;
+            if(this.filteredStudents)
+            {
+              this.filteredStudents=students;
+            }
+            if(this.students){
+              this.students = students;
+            }
           });
-        }
-      );
-    });
+        },
+      );  
   }
 }
