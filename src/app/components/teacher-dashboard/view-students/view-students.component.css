@@ -38,3 +38,14 @@ mat-error {
 .error-border {
     border: 2px solid red;
 }
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .search-input:focus {
+    border-color: #007bff;
+  }
