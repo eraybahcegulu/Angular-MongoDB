@@ -67,7 +67,7 @@ async function updateStudent(req, res) {
 
     if (studentNoControl) {
       if (studentNoControl.no !== existingStudent.no) {
-        return res.status(400).json({ message: `Update failed. Student No ${no} is already registered for ${studentNoControl.name} ${studentNoControl.name} (${studentNoControl.email})` });
+        return res.status(400).json({ message: `Update failed for student no ${ existingStudent.no } (${ existingStudent.email }). Student no ${no} is already registered for ${ studentNoControl.name } ${ studentNoControl.surname } (${ studentNoControl.email })` });
       }
     }
 
