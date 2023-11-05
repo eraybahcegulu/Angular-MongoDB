@@ -173,9 +173,11 @@
                         <div class="btn-group" role="group" style="display:flex; justify-content:space-between">
                             <ng-container *ngIf="!student.isEditing; else editField">
                                 <a type="button" class="btn btn-primary" (click)="startEditing(student)">Edit</a>
-                                <a type="button" class="btn btn-info">Message</a>
+                                <a type="button" class="btn btn-info" 
+                                (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname, student.messages)"
+                                data-toggle="modal" data-target="#sendMessageModal">Message</a>
                                 <a type="button" class="btn btn-danger"
-                                    (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname)"
+                                    (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname, student.messages)"
                                     data-toggle="modal" data-target="#deleteStudentModal">Delete</a>
                             </ng-container>
                             <ng-template #editField>
@@ -185,7 +187,6 @@
                         </div>
                     </td>
                 </tr>
-
                 <tr *ngIf="students.length === 0">
                     <td colspan="10">
                         <p class="alert alert-danger">
@@ -203,15 +204,21 @@
             </tbody>
         </table>
     </div>
-    <div class="updateStudentMessage" *ngIf="updateStudentMessage"
-        [ngClass]="updateStudentMessageType === 'success' ? 'alert alert-success' : (updateStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
+
+
+    <div class="container" *ngIf="updateStudentMessage">
+        <div [ngClass]="updateStudentMessageType === 'success' ? 'alert alert-success' : (updateStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
         <strong>{{ updateStudentMessage }}</strong>
     </div>
+    </div>
 
-    <div class="deleteStudentMessage" *ngIf="deleteStudentMessage"
-        [ngClass]="deleteStudentMessageType === 'success' ? 'alert alert-success' : (deleteStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
+    <div class="container" *ngIf="deleteStudentMessage">
+        <div [ngClass]="deleteStudentMessageType === 'success' ? 'alert alert-success' : (deleteStudentMessageType === 'danger' ? 'alert alert-danger' : '')">
         <strong>{{ deleteStudentMessage }}</strong>
     </div>
+    </div>
+
+
 </div>
 
 <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel"
@@ -220,9 +227,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteStudentModalLabel"> <strong> Delete Student </strong></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <h5> <strong> Student information </strong> </h5>
@@ -244,6 +248,107 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" (click)="confirmDelete(selectedStudentId)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="sendMessageModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sendMessageModalLabel"> <strong> Send Message </strong></h5>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal" data-target="#viewMessagesModal"> View Messages </button>
+            </div>
+
+            <div class="modal-body">
+                <h5> <strong> Student information </strong> </h5>
+                <ul>
+                    <li>
+                        <strong>No: </strong> {{selectedStudentNo}}
+                    </li>
+                    <li>
+                        <strong>Email: </strong> {{selectedStudentEmail}}
+                    </li>
+                    <li>
+                        <strong>Name: </strong> {{selectedStudentName}}
+                    </li>
+                    <li>
+                        <strong>Surname: </strong> {{selectedStudentSurname}}
+                    </li>
+                </ul>
+                <label for="message" class="form-label"> <strong> Message </strong> </label>
+                <textarea class="form-control" id="message" rows="4" required maxlength="100" [(ngModel)]="message" ></textarea>
+                <mat-error *ngIf="message.trim().length < 3"> <strong> Message required and must be at least 3 characters </strong>
+                </mat-error>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" [disabled]="message.trim().length < 3" (click)="sendMessage(selectedStudentId)">Send</button>
+            </div>
+            
+            <div class="container" *ngIf="sendMessageMessage">
+                <div
+                [ngClass]="sendMessageMessageType === 'success' ? 'alert alert-success' : (sendMessageMessageType === 'danger' ? 'alert alert-danger' : '')">
+                <strong>{{ sendMessageMessage }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewMessagesModal" tabindex="-1" role="dialog" aria-labelledby="viewMessagesModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewMessagesModalLabel"> <strong> Sent Messages </strong></h5>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal" data-target="#sendMessageModal"> Send Message </button>
+            </div>
+
+            <div class="modal-body">
+                <h5> <strong> Student information </strong> </h5>
+                <ul>
+                    <li>
+                        <strong>No: </strong> {{selectedStudentNo}}
+                    </li>
+                    <li>
+                        <strong>Email: </strong> {{selectedStudentEmail}}
+                    </li>
+                    <li>
+                        <strong>Name: </strong> {{selectedStudentName}}
+                    </li>
+                    <li>
+                        <strong>Surname: </strong> {{selectedStudentSurname}}
+                    </li>
+                </ul>
+
+                <div>
+                    <div *ngFor="let message of selectedStudentMessages">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <strong> {{ message.date | date: 'dd.MM.yyyy HH:mm:ss'}} </strong> 
+                                <i (click)="deleteMessage(message._id)"class="fa-solid fa-xmark fa-lg" style="color: #ff0000;"></i>
+                            </div>
+                            <div class="card-body">
+                                {{ message.message }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div *ngIf ="selectedStudentMessages.length === 0">
+                        <p class="alert alert-danger">
+                            <strong> No messages sent to this student were found. </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

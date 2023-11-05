@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../services/student.service';
 import { HandlerDeleteStudentService } from '../../../services/handlers/deleteStudentHandler.service';
 import { HandlerUpdateStudentService } from '../../../services/handlers/updateStudentHandler.service';
+import { HandlerSendMessageService } from '../../../services/handlers/sendMessageHandler.service';
 const FILTER_PAG_REGEX = /[^0-9]/g;
 declare var $: any;
 @Component({
@@ -15,11 +16,13 @@ export class ViewStudentsComponent implements OnInit {
   filteredStudents: any[] = [];
   page = 1;
   pageSize = 5;
+  message: string = '';
   selectedStudentId: any;
   selectedStudentNo: any;
   selectedStudentEmail: any;
   selectedStudentName: any;
   selectedStudentSurname: any;
+  selectedStudentMessages: any[] = [];
 
   deleteStudentMessage: string = '';
   deleteStudentMessageType: string = '';
@@ -27,12 +30,16 @@ export class ViewStudentsComponent implements OnInit {
   updateStudentMessage: string = '';
   updateStudentMessageType: string = '';
 
+  sendMessageMessage: string = '';
+  sendMessageMessageType: string = '';
+
   searchText: string = '';
 
   constructor(
     private studentService: StudentService,
     private handlerDeleteStudentService: HandlerDeleteStudentService,
-    private handlerUpdateStudentService: HandlerUpdateStudentService
+    private handlerUpdateStudentService: HandlerUpdateStudentService,
+    private handlerSendMessageService: HandlerSendMessageService
   ) { }
 
   ngOnInit(): void {
@@ -103,18 +110,67 @@ export class ViewStudentsComponent implements OnInit {
   }
 
 
-  setSelectedStudent(studentId: string, studentNo: number, studentEmail: string, studentName: string, studentSurname: string) {
+  setSelectedStudent(studentId: string, studentNo: number, studentEmail: string, studentName: string, studentSurname: string, studentMessages: any[]) {
+
     this.selectedStudentId = studentId;
     this.selectedStudentNo = studentNo;
     this.selectedStudentEmail = studentEmail;
     this.selectedStudentName = studentName;
     this.selectedStudentSurname = studentSurname;
+    this.selectedStudentMessages = studentMessages;
   }
 
+  sendMessage(selectedStudentId: string) {
+    const messageData = {
+      message: this.message,
+    };
+  
+    this.studentService.sendMessage(selectedStudentId, messageData).subscribe(
+      (response) => {
+        this.getMessagesForSelectedStudent();
+  
+        this.message = '';
+        const sendMessageResponse = this.handlerSendMessageService.handleSendMessageResponse(response);
+        this.sendMessageMessage = sendMessageResponse.message;
+        this.sendMessageMessageType = sendMessageResponse.type;
+  
+        setTimeout(() => {
+          this.sendMessageMessage = '';
+          this.sendMessageMessageType = '';
+        }, 3000);
+      },
+      (error) => {
+        const sendMessageError = this.handlerSendMessageService.handleSendMessageError(error);
+        this.sendMessageMessage = sendMessageError.message;
+        this.sendMessageMessageType = sendMessageError.type;
+  
+        setTimeout(() => {
+          this.sendMessageMessage = '';
+          this.sendMessageMessageType = '';
+        }, 3000);
+      }
+    )
+  }
+  
+  getMessagesForSelectedStudent() {
+    if (this.selectedStudentId) {
+      this.studentService.getMessagesForStudent(this.selectedStudentId).subscribe((messages: any[]) => {
+        this.selectedStudentMessages = messages;
+      });
+    }
+  }
+
+  deleteMessage(messageId: string){
+    this.studentService.deleteMessage(messageId).subscribe(
+      () => {
+        this.getMessagesForSelectedStudent() 
+      }
+    )
+  }
+  
   confirmDelete(selectedStudentId: string) {
     this.studentService.getStudents().subscribe((students: any[]) => {
       this.students = students;
-      this.selectedStudentId = this.students.find(student => student._id === selectedStudentId);
       this.studentService.deleteStudent(selectedStudentId).subscribe(
         (response) => {
           const deleteStudentResponse = this.handlerDeleteStudentService.handleDeleteStudentResponse(response);

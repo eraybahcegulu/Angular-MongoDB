@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const messageSchema = new mongoose.Schema({
+  message: String,
+  date: { type: Date, default: Date.now },
+});
+
 const studentSchema = new mongoose.Schema({
   name: String,
   surname: String,
@@ -22,6 +27,7 @@ const studentSchema = new mongoose.Schema({
     type: String,
     default: 'student',
   },
+  messages: [messageSchema],
 });
-
+module.exports = mongoose.model('Messsage', messageSchema);
 module.exports = mongoose.model('Student', studentSchema);

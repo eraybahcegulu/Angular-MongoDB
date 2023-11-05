@@ -44,8 +44,35 @@ mat-error {
     border: 1px solid #afafaf;
     border-radius: 5px;
     outline: none;
-  }
-  
-  .search-input:focus {
+}
+
+.search-input:focus {
     border-color: #007bff;
-  }
+}
+
+textarea {
+    resize: none;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+i{
+    margin-top: 10px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.card:hover i{
+    visibility: visible;
+}
