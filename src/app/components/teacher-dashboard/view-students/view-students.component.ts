@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../services/student.service';
-import { HandlerDeleteStudentService } from '../../../services/handlers/deleteStudentHandler.service';
-import { HandlerUpdateStudentService } from '../../../services/handlers/updateStudentHandler.service';
-import { HandlerSendMessageService } from '../../../services/handlers/sendMessageHandler.service';
+import { MessageService } from '../../../services/message.service';
+import { HandlerDeleteStudentService } from '../../../services/handlers/student/deleteStudentHandler.service';
+import { HandlerUpdateStudentService } from '../../../services/handlers/student/updateStudentHandler.service';
+import { HandlerSendMessageService } from '../../../services/handlers/message/sendMessageHandler.service';
 const FILTER_PAG_REGEX = /[^0-9]/g;
 declare var $: any;
 @Component({
@@ -37,6 +38,7 @@ export class ViewStudentsComponent implements OnInit {
 
   constructor(
     private studentService: StudentService,
+    private messageService: MessageService,
     private handlerDeleteStudentService: HandlerDeleteStudentService,
     private handlerUpdateStudentService: HandlerUpdateStudentService,
     private handlerSendMessageService: HandlerSendMessageService
@@ -125,7 +127,7 @@ export class ViewStudentsComponent implements OnInit {
       message: this.message,
     };
   
-    this.studentService.sendMessage(selectedStudentId, messageData).subscribe(
+    this.messageService.sendMessage(selectedStudentId, messageData).subscribe(
       (response) => {
         this.getMessagesForSelectedStudent();
   
@@ -154,14 +156,14 @@ export class ViewStudentsComponent implements OnInit {
   
   getMessagesForSelectedStudent() {
     if (this.selectedStudentId) {
-      this.studentService.getMessagesForStudent(this.selectedStudentId).subscribe((messages: any[]) => {
+      this.messageService.getMessagesForStudent(this.selectedStudentId).subscribe((messages: any[]) => {
         this.selectedStudentMessages = messages;
       });
     }
   }
 
   deleteMessage(messageId: string){
-    this.studentService.deleteMessage(messageId).subscribe(
+    this.messageService.deleteMessage(messageId).subscribe(
       () => {
         this.getMessagesForSelectedStudent() 
       }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../../services/student.service';
-import { HandlerAddStudentService } from '../../../services/handlers/addStudentHandler.service';
+import { HandlerAddStudentService } from '../../../services/handlers/student/addStudentHandler.service';
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
