@@ -1,10 +1,11 @@
-const Student = require('../models/student');
+const studentUtils = require('../utils/studentUtils');
+const messageUtils = require('../utils/messageUtils');
 
 async function sendMessage(req, res) {
     const studentId = req.params.studentId;
     const { message } = req.body;
     try {
-      const existingStudent = await Student.findById(studentId);
+      const existingStudent = await studentUtils.findStudentById(studentId);
   
       if (!existingStudent) {
         return res.status(400).json({ message: 'Student not found.' });
@@ -27,7 +28,7 @@ async function sendMessage(req, res) {
     const studentId = req.params.studentId;
   
     try {
-      const student = await Student.findById(studentId);
+      const student = await studentUtils.findStudentById(studentId);
       if (!student) {
         return res.status(404).json({ status: 404, message: 'Student not found' });
       }
@@ -44,7 +45,7 @@ async function sendMessage(req, res) {
     const messageId = req.params.messageId;
   
     try {
-      const existingMessage = await Student.findOne({ 'messages._id': messageId });
+      const existingMessage = await messageUtils.findMessageById(messageId);
   
       if (!existingMessage) {
         return res.status(400).json({ message: 'Message not found.' });

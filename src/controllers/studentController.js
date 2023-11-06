@@ -1,9 +1,10 @@
 
-const Student = require('../models/student');
+
+const studentUtils = require('../utils/studentUtils');
 
 async function getStudents(req, res) {
   try {
-    const students = await Student.find();
+    const students = await studentUtils.getStudents();
     res.json(students);
   } catch (error) {
     console.error('Error getting students', error);
@@ -14,10 +15,10 @@ async function getStudents(req, res) {
 async function addStudent(req, res) {
   const { name, surname, email, no, password } = req.body;
   try {
-    const StudentEmailControl = await Student.findOne({ email });
-    const studentNoControl = await Student.findOne({ no });
+    const studentEmailControl = await studentUtils.findStudentByEmail( email );
+    const studentNoControl = await studentUtils.findStudentByNo( no );
 
-    if(StudentEmailControl)
+    if(studentEmailControl)
     {
       res.status(400).json({ message: `Student Email ${email} is already registered.` });
     }
@@ -27,10 +28,8 @@ async function addStudent(req, res) {
     } 
  
     else {
-      const newStudent = new Student({ name, surname, email, no, password });
-      const savedStudent = await newStudent.save();
-
-      if (savedStudent) {
+      const newStudent = await studentUtils.createStudent( name, surname, email, no, password );
+      if (newStudent) {
         res.status(200).json({ message: 'Student added successfully.' });
       }
     }
@@ -44,14 +43,15 @@ async function deleteStudent(req, res) {
   const studentId = req.params.studentId;
 
   try {
-    const existingStudent = await Student.findById(studentId);
+    const existingStudent = await studentUtils.findStudentById(studentId);
 
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
     }
-
-    await Student.deleteOne({ _id: studentId });
+    
+    await studentUtils.deleteStudentById({ _id: studentId });
     return res.status(200).json({ message: 'Student deleted successfully.' });
+
   } catch (error) {
     console.error('Error deleting student', error);
     res.status(500).json({ message: 'Error deleting student', error: error.message });
@@ -64,9 +64,9 @@ async function updateStudent(req, res) {
   const { no, email, password, name, surname, midterm, final, absenteeism } = req.body;
 
   try {
-    const studentNoControl = await Student.findOne({ no });
-    const studentEmailControl = await Student.findOne({ email });
-    const existingStudent = await Student.findById(studentId);
+    const studentNoControl = await studentUtils.findStudentByNo( no );
+    const studentEmailControl = await studentUtils.findStudentByEmail( email );
+    const existingStudent = await studentUtils.findStudentById(studentId);
 
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
