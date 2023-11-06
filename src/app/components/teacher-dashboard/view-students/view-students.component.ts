@@ -112,13 +112,13 @@ export class ViewStudentsComponent implements OnInit {
   }
 
   setSelectedStudent(studentId: string, studentNo: number, studentEmail: string, studentName: string, studentSurname: string, studentMessages: any[]) {
-    this.getMessagesForSelectedStudent() 
     this.selectedStudentId = studentId;
     this.selectedStudentNo = studentNo;
     this.selectedStudentEmail = studentEmail;
     this.selectedStudentName = studentName;
     this.selectedStudentSurname = studentSurname;
     this.selectedStudentMessages = studentMessages;
+    this.getMessagesForSelectedStudent() 
   }
 
   sendMessage(selectedStudentId: string) {
