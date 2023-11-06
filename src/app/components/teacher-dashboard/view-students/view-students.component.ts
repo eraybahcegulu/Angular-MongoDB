@@ -111,9 +111,8 @@ export class ViewStudentsComponent implements OnInit {
     input.value = input.value.replace(FILTER_PAG_REGEX, '');
   }
 
-
   setSelectedStudent(studentId: string, studentNo: number, studentEmail: string, studentName: string, studentSurname: string, studentMessages: any[]) {
-
+    this.getMessagesForSelectedStudent() 
     this.selectedStudentId = studentId;
     this.selectedStudentNo = studentNo;
     this.selectedStudentEmail = studentEmail;
@@ -201,7 +200,6 @@ export class ViewStudentsComponent implements OnInit {
       $('#deleteStudentModal').modal('hide');
     });
   }
-
 
   editErrors(student: any): boolean {
     if (student.email.trim().length < 1 || student.password.trim().length < 1 || student.name.trim().length < 1 || student.surname.trim().length < 1 || student.no === null || student.midterm > 100 || student.final > 100 || student.absenteeism > 100) {
