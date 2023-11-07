@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ViewStudentsComponent } from './components/teacher-dashboard/view-students/view-students.component';
 import { AddStudentComponent } from './components/teacher-dashboard/add-student/add-student.component';
+import { CreateExamComponent } from './components/teacher-dashboard/create-exam/create-exam.component';
 import { StudentHomeComponent } from './components/student-home/student-home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDashboardComponent } from './components/teacher-dashboard/teacher-dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { RouterModule } from '@angular/router';
     AddStudentComponent,
     StudentHomeComponent,
     LoginComponent,
-    TeacherDashboardComponent
+    TeacherDashboardComponent,
+    CreateExamComponent
   ],
   imports: [
     BrowserModule,

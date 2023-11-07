@@ -4,7 +4,7 @@ async function getStudents() {
     return await Student.find();
 }
 
-async function findStudentForLogin(email, password) {
+async function findStudentForLogin( email, password ) {
     return await Student.findOne({ email, password });
 }
 

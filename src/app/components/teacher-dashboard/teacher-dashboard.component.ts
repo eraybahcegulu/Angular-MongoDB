@@ -32,4 +32,9 @@ export class TeacherDashboardComponent {
   viewStudents(){
     this.router.navigate(['/view-students']);
   }
+
+  createExam(){
+    this.router.navigate(['/create-exam']);
+  }
+
 }

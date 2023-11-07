@@ -1,5 +1,3 @@
-
-
 const studentUtils = require('../utils/studentUtils');
 
 async function getStudents(req, res) {

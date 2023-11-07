@@ -29,5 +29,5 @@ const studentSchema = new mongoose.Schema({
   },
   messages: [messageSchema],
 });
-module.exports = mongoose.model('Messsage', messageSchema);
+
 module.exports = mongoose.model('Student', studentSchema);

@@ -23,7 +23,7 @@ export class AddStudentComponent{
       name: ['', [Validators.required, Validators.minLength(3),]],
       surname: ['', [Validators.required, Validators.minLength(3),]],
       email: ['', [Validators.required, Validators.email, Validators.minLength(3), ]],
-      no: ['', [      Validators.required, Validators.required, Validators.pattern('^[0-9]{3,15}$'),]], 
+      no: ['', [      Validators.required, Validators.pattern('^[0-9]{3,15}$'),]], 
       password: ['', [Validators.required, Validators.minLength(6),]]
     });
   }

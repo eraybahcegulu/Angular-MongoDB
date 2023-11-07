@@ -1,0 +1,63 @@
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.success-border {
+    border: 2px solid green;
+}
+
+.text-danger {
+    font-size: 10px;
+}
+
+.form-control {
+    outline: none;
+}
+
+.view-exams-card-body {
+    max-height: 490px;
+    overflow-y: auto;
+}
+
+.numbers {
+    text-align: center;
+    width: 55px;
+}
+
+select
+{
+    font-size: 15px;
+}
+input{
+    font-size: 15px;
+}
+
+.view-exams-card{
+    transition: transform 0.2s;
+}
+
+.view-exams-card:hover {
+    transform: scale(1.03);
+}
+
+.card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.fa-xmark {
+    margin-top: 10px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.view-exams-card:hover .fa-xmark {
+    visibility: visible;
+}
+
+.card-body p {
+    border-bottom: 1px solid #ccc;
+
+  }
