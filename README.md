@@ -17,3 +17,5 @@
 ![8](https://github.com/eraybahcegulu/Student-Management-System-Angular-Express-MongoDB/assets/84785201/a13d4b2b-b1b0-492b-be83-94ecc456bd65)
 
 ![9](https://github.com/eraybahcegulu/Student-Management-System-Angular-Express-MongoDB/assets/84785201/b0743684-425b-4c7f-a74f-79f9ab9c71c2)
+
+![10](https://github.com/eraybahcegulu/Student-Management-System-Angular-Express-MongoDB/assets/84785201/4ee4399f-6639-4fb6-afc2-6fe699d23a64)
