@@ -26,15 +26,15 @@
     width: 55px;
 }
 
-select
-{
-    font-size: 15px;
-}
-input{
+select {
     font-size: 15px;
 }
 
-.view-exams-card{
+input {
+    font-size: 15px;
+}
+
+.view-exams-card {
     transition: transform 0.2s;
 }
 
@@ -42,7 +42,7 @@ input{
     transform: scale(1.03);
 }
 
-.card-header{
+.card-header {
     display: flex;
     justify-content: space-between;
 }
@@ -57,7 +57,31 @@ input{
     visibility: visible;
 }
 
+.view-registered-student-card {
+    transition: transform 0.2s;
+}
+
+.view-registered-student-card:hover {
+    transform: scale(1.03);
+}
+
+.view-registered-student-card:hover .fa-xmark {
+    visibility: visible;
+}
+
 .card-body p {
     border-bottom: 1px solid #ccc;
 
-  }
+}
+
+.search-input {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+}

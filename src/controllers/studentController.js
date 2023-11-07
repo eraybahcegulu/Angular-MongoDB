@@ -1,4 +1,5 @@
 const studentUtils = require('../utils/studentUtils');
+const examUtils = require('../utils/examUtils');
 
 async function getStudents(req, res) {
   try {
@@ -13,20 +14,19 @@ async function getStudents(req, res) {
 async function addStudent(req, res) {
   const { name, surname, email, no, password } = req.body;
   try {
-    const studentEmailControl = await studentUtils.findStudentByEmail( email );
-    const studentNoControl = await studentUtils.findStudentByNo( no );
+    const studentEmailControl = await studentUtils.findStudentByEmail(email);
+    const studentNoControl = await studentUtils.findStudentByNo(no);
 
-    if(studentEmailControl)
-    {
+    if (studentEmailControl) {
       res.status(400).json({ message: `Student Email ${email} is already registered.` });
     }
 
     else if (studentNoControl) {
-      res.status(400).json({ message: `Student No ${no} is already registered.`});
-    } 
- 
+      res.status(400).json({ message: `Student No ${no} is already registered.` });
+    }
+
     else {
-      const newStudent = await studentUtils.createStudent( name, surname, email, no, password );
+      const newStudent = await studentUtils.createStudent(name, surname, email, no, password);
       if (newStudent) {
         res.status(200).json({ message: 'Student added successfully.' });
       }
@@ -46,7 +46,17 @@ async function deleteStudent(req, res) {
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
     }
-    
+
+    const studentNo = existingStudent.no;
+    const exams = await examUtils.getExams();
+
+    for (const exam of exams) {
+      exam.registeredStudents = exam.registeredStudents.filter(
+        (registeredStudent) => registeredStudent.no !== studentNo
+      );
+      await exam.save();
+    }
+
     await studentUtils.deleteStudentById({ _id: studentId });
     return res.status(200).json({ message: 'Student deleted successfully.' });
 
@@ -62,39 +72,50 @@ async function updateStudent(req, res) {
   const { no, email, password, name, surname, midterm, final, absenteeism } = req.body;
 
   try {
-    const studentNoControl = await studentUtils.findStudentByNo( no );
-    const studentEmailControl = await studentUtils.findStudentByEmail( email );
+    const studentNoControl = await studentUtils.findStudentByNo(no);
+    const studentEmailControl = await studentUtils.findStudentByEmail(email);
     const existingStudent = await studentUtils.findStudentById(studentId);
 
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
     }
 
-    if (studentEmailControl){
+    if (studentEmailControl) {
       if (studentEmailControl.email !== existingStudent.email) {
-        return res.status(400).json({ message: `Update failed for student email ${ existingStudent.email } (${ existingStudent.no }). Student email ${email} is already registered for ${ studentEmailControl.name } ${ studentEmailControl.surname } (${ studentEmailControl.no })` });
+        return res.status(400).json({ message: `Update failed for student email ${existingStudent.email} (${existingStudent.no}). Student email ${email} is already registered for ${studentEmailControl.name} ${studentEmailControl.surname} (${studentEmailControl.no})` });
       }
     }
     if (studentNoControl) {
       if (studentNoControl.no !== existingStudent.no) {
-        return res.status(400).json({ message: `Update failed for student no ${ existingStudent.no } (${ existingStudent.email }). Student no ${email} is already registered for ${ studentNoControl.name } ${ studentNoControl.surname } (${ studentNoControl.email })` });
+        return res.status(400).json({ message: `Update failed for student no ${existingStudent.no} (${existingStudent.email}). Student no ${email} is already registered for ${studentNoControl.name} ${studentNoControl.surname} (${studentNoControl.email})` });
       }
     }
 
-      existingStudent.no = no;
-      existingStudent.email = email;
-      existingStudent.password = password;
-      existingStudent.name = name;
-      existingStudent.surname = surname;
-      existingStudent.midterm = midterm;
-      existingStudent.final = final;
-      existingStudent.absenteeism = absenteeism;
-  
-      const updatedStudent = await existingStudent.save();
-  
-      if (updatedStudent) {
-        return res.status(200).json({ message: 'Student updated successfully.' });
+    const exams = await examUtils.getExams();
+
+    for (const exam of exams) {
+      for (const registeredStudent of exam.registeredStudents) {
+        if (registeredStudent.no === existingStudent.no) {
+          registeredStudent.no = no;
+        }
       }
+      await exam.save();
+    }
+
+    existingStudent.no = no;
+    existingStudent.email = email;
+    existingStudent.password = password;
+    existingStudent.name = name;
+    existingStudent.surname = surname;
+    existingStudent.midterm = midterm;
+    existingStudent.final = final;
+    existingStudent.absenteeism = absenteeism;
+
+    const updatedStudent = await existingStudent.save();
+
+    if (updatedStudent) {
+      return res.status(200).json({ message: 'Student updated successfully.' });
+    }
   } catch (error) {
     console.error('Error updating student', error);
     res.status(500).json({ message: 'Error updating student', error: error.message });

@@ -45,9 +45,12 @@ export class ViewStudentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getStudents();
+  }
+
+  getStudents(){
     this.studentService.getStudents().subscribe((students: any[]) => {
       this.students = students;
-
     });
   }
 
@@ -213,9 +216,7 @@ export class ViewStudentsComponent implements OnInit {
   }
 
   saveEditedStudent(student: any) {
-    
       student.isEditing = false;
-
       const updatedStudentData = {
         no: student.no,
         email: student.email,

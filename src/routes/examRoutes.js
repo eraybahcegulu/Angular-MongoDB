@@ -8,4 +8,10 @@ router.post('/createExam', examController.createExam);
 
 router.delete('/deleteExam/:examId', examController.deleteExam);
 
+router.get('/exams/:examId/students', examController.getStudentsForSelectedExam);
+
+router.post('/registerStudentToExam/:examId', examController.registerStudentToExam);
+
+router.delete('/removeRegisteredStudent/:selectedExamId/:studentNo', examController.removeRegisteredStudent)
+
 module.exports = router;

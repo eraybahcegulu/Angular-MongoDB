@@ -21,4 +21,4 @@ async function createExam( name, date, time, type, questionType, numberOfQuestio
     const savedExam = await newExam.save();
     return savedExam;
 }
-module.exports = { getExams, findExamByName, findExamById, deleteExamById, createExam };
+module.exports = { getExams, findExamByName, findExamById, deleteExamById, createExam,};

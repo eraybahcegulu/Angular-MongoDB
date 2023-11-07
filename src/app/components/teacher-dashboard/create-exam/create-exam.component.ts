@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExamService } from '../../../services/exam.service';
+import { StudentService } from '../../../services/student.service';
 import { HandlerCreateExamService } from '../../../services/handlers/exam/createExamHandler.service';
 import { HandlerDeleteExamService } from '../../../services/handlers/exam/deleteExamHandler.service';
+import { HandlerRegisterStudentToExamService } from '../../../services/handlers/exam/registerStudentToExamHandler.service';
+const FILTER_PAG_REGEX = /[^0-9]/g;
 @Component({
   selector: 'app-create-exam',
   templateUrl: './create-exam.component.html',
@@ -17,13 +20,34 @@ export class CreateExamComponent implements OnInit {
   deleteExamMessage: string = '';
   deleteExamMessageType: string = '';
 
+  registerStudentToExamMessage: string = '';
+  registerStudentToExamMessageType: string = '';
+
   exams: any[] = [];
+  students: any[] = [];
+
+  selectedExamId: any;
+  selectedExamName: any;
+  selectedExamDate: any;
+  selectedExamTime: any;
+  selectedExamType: any;
+  selectedExamNumberOfQuestions: any;
+  selectedExamQuestionType: any;
+  selectedExamDuration: any;
+  selectedExamRegisteredStudents: any[] = [];
+
+  searchText: string = '';
+  page = 1;
+  pageSize = 5;
+  filteredStudents: any[] = [];
 
   constructor(
     private examService: ExamService,
+    private studentService: StudentService,
     private formBuilder: FormBuilder,
     private handlerCreateExamService: HandlerCreateExamService,
-    private handlerDeleteExamService: HandlerDeleteExamService
+    private handlerDeleteExamService: HandlerDeleteExamService,
+    private handlerRegisterStudentToExamService: HandlerRegisterStudentToExamService,
   ) {
 
     this.createExamForm = this.formBuilder.group({
@@ -49,6 +73,87 @@ export class CreateExamComponent implements OnInit {
 
   ngOnInit(): void {
     this.getExams()
+  }
+
+  getStudents()
+  {
+    this.studentService.getStudents().subscribe((students: any[]) => {
+      this.students = students;
+    });
+  }
+
+
+  formatInput(input: HTMLInputElement) {
+    input.value = input.value.replace(FILTER_PAG_REGEX, '');
+  }
+
+  selectPage(page: string) {
+    const newPage = parseInt(page, 10) || 1;
+    const totalPages = this.getTotalPages();
+    if (newPage >= 1 && newPage <= totalPages) {
+      this.page = newPage;
+    } else if (newPage > totalPages) {
+      this.page = totalPages;
+    } else {
+      this.page = 1;
+    }
+  }
+
+  getStudentsOnCurrentPage() {
+    if (this.searchText) {
+      const startIndex = (this.page - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredStudents.slice(startIndex, endIndex);
+    } else {
+
+      const startIndex = (this.page - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.students.slice(startIndex, endIndex);
+    }
+
+  }
+
+  getTotalPages(): number {
+    if (this.searchText) {
+      const totalFilteredStudents = this.filteredStudents.length;
+      return Math.ceil(totalFilteredStudents / this.pageSize);
+    } else {
+      const totalStudents = this.students.length;
+      return Math.ceil(totalStudents / this.pageSize);
+    }
+  }
+  
+  searchStudents(): void {
+    if (this.searchText) {
+      this.page = 1;
+      const searchTerms = this.searchText.toLowerCase().split(" ");
+      this.studentService.getStudents().subscribe((students: any[]) => {
+        this.students = students;
+        this.filteredStudents = this.students.filter(student => {
+          return searchTerms.every(term =>
+            student.name.toLowerCase().includes(term) ||
+            student.surname.toLowerCase().includes(term) ||
+            student.no.toString().toLowerCase().includes(term)
+          );
+        });
+      });
+    } else {
+      this.filteredStudents = this.students;
+    }
+  }
+
+  setSelectedExam(examId: string,  examName: string, examDate: object, examTime: object, examType: string, examQuestionType: string, examNumberOfQuestions:string, examDuration: number , examRegisteredStudents: any[]) {
+    this.selectedExamId = examId;
+    this.selectedExamName = examName;
+    this.selectedExamDate = examDate;
+    this.selectedExamTime = examTime;
+    this.selectedExamType = examType;
+    this.selectedExamNumberOfQuestions = examNumberOfQuestions;
+    this.selectedExamQuestionType = examQuestionType;
+    this.selectedExamDuration = examDuration;
+    this.selectedExamRegisteredStudents = examRegisteredStudents;
+    this.getStudentsForSelectedExam();
+    this.page = 1;
   }
 
   createExam(){
@@ -86,11 +191,8 @@ export class CreateExamComponent implements OnInit {
           this.createExamMessage = '';
           this.createExamMessageType = '';
         }, 3000);
-
       }
-      
     );
-
   }
 
   editErrors(inputs: any): boolean {
@@ -104,8 +206,7 @@ export class CreateExamComponent implements OnInit {
   {
     this.examService.deleteExam(examId).subscribe(
       () => {
-        this.getExams()
-        
+        this.getExams()   
       },
       (error) => {
         this.getExams()
@@ -116,7 +217,56 @@ export class CreateExamComponent implements OnInit {
           this.deleteExamMessage = '';
           this.deleteExamMessageType = '';
         }, 3000);
+      }
+    )
+  }
 
+  getStudentsForSelectedExam()
+  {
+    if (this.selectedExamId) {
+      this.examService.getStudentsForSelectedExam(this.selectedExamId).subscribe((selectedExamRegisteredStudents: any[]) => {
+        this.selectedExamRegisteredStudents = selectedExamRegisteredStudents;
+      });
+    }
+  }
+
+  registerStudentForExam(examId: string, studentNo: number)
+  {  
+    const studentNoData = {
+      studentNo: studentNo
+    };
+    this.examService.registerStudentToExam(examId, studentNoData ).subscribe(
+      (response) => {
+        this.getStudentsForSelectedExam();
+        const registerStudentToExamResponse = this.handlerRegisterStudentToExamService.handleRegisterStudentToExamResponse(response);
+        this.registerStudentToExamMessage = registerStudentToExamResponse.message;
+        this.registerStudentToExamMessageType = registerStudentToExamResponse.type;
+        setTimeout(() => {
+          this.registerStudentToExamMessage = '';
+          this.registerStudentToExamMessageType = '';
+        }, 3000);
+      },
+      (error) => {
+        const registerStudentToExamError = this.handlerRegisterStudentToExamService.handleRegisterStudentToExamError(error);
+        this.registerStudentToExamMessage = registerStudentToExamError.message;
+        this.registerStudentToExamMessageType = registerStudentToExamError.type;
+        setTimeout(() => {
+          this.registerStudentToExamMessage = '';
+          this.registerStudentToExamMessageType = '';
+        }, 3000);
+      }
+    )
+  }
+
+  isStudentRegistered(studentNo: number): boolean {
+    return this.selectedExamRegisteredStudents.some(student => student.no === studentNo);
+  }
+
+
+  removeRegisteredStudent(selectedExamId: string, studentNo : number){
+    this.examService.removeRegisteredStudent(selectedExamId, studentNo).subscribe(
+      () => {
+        this.getStudentsForSelectedExam() 
       }
     )
   }

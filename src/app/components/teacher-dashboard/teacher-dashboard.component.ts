@@ -16,7 +16,6 @@ export class TeacherDashboardComponent {
     this.authService.getUserInfo().subscribe(
       (userInfo: any) => {
         this.userInfo = userInfo;
-
       }
     );
   }
