@@ -1,5 +1,5 @@
 <div *ngIf="userInfo" class="d-flex justify-content-center">
-    <div class="container mt-5">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card text-center">
@@ -10,10 +10,10 @@
                         <p> Welcome <strong> {{ userInfo.email }} </strong>  </p>
                         <button class="btn btn-sm btn-danger" (click)="logout()">Logout</button>
                     </div>
-                    <div class="card-footer text-muted">
-                        <button class="btn btn-outline-primary" style="margin-right: 10px;" (click)="viewStudents()" >View Students</button>
-                        <button class="btn btn-outline-dark" style="margin-right: 10px;" (click)="addStudent()" >Add Student</button>
-                        <button class="btn btn-outline-info" (click)="createExam()" >Create Exam</button>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-primary mt-2 mb-2" (click)="viewStudents()" >View Students</button>
+                        <button class="btn btn-outline-dark mt-2 mb-2" (click)="addStudent()" >Add Student</button>
+                        <button class="btn btn-outline-info mt-2 mb-2" (click)="createExam()" >Exams</button>
                       </div>
                 </div>
             </div>
