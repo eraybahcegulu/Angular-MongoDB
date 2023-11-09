@@ -91,12 +91,19 @@ async function updateStudent(req, res) {
       }
     }
 
+
+    
+    let controlRegisteredExams = false;
+    let registeredExamsNames = [];
+
     const exams = await examUtils.getExams();
 
     for (const exam of exams) {
       for (const registeredStudent of exam.registeredStudents) {
         if (registeredStudent.no === existingStudent.no) {
           registeredStudent.no = no;
+          controlRegisteredExams = true;
+          registeredExamsNames.push(`${exam.name} ${exam.type}`);
         }
       }
       await exam.save();
@@ -114,6 +121,10 @@ async function updateStudent(req, res) {
     const updatedStudent = await existingStudent.save();
 
     if (updatedStudent) {
+      if(controlRegisteredExams)
+      {
+        return res.status(200).json({ message: `Student updated successfully. Registered information for exams found and has been updated. (${registeredExamsNames})` });
+      }
       return res.status(200).json({ message: 'Student updated successfully.' });
     }
   } catch (error) {
