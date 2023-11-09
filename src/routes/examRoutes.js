@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const examController = require('../controllers/examController');
+const exam = require('../controllers/examController');
 
-router.get('/exams', examController.getExams);
+router.get('/exams', exam.getExams);
 
-router.post('/createExam', examController.createExam);
+router.post('/createExam', exam.createExam);
 
-router.delete('/deleteExam/:examId', examController.deleteExam);
+router.delete('/deleteExam/:examId', exam.deleteExam);
 
-router.get('/exams/:examId/students', examController.getStudentsForSelectedExam);
+router.get('/exams/:examId/students', exam.getStudentsForSelectedExam);
 
-router.post('/registerStudentToExam/:examId', examController.registerStudentToExam);
+router.post('/registerStudentToExam/:examId', exam.registerStudentToExam);
 
-router.delete('/removeRegisteredStudent/:selectedExamId/:studentNo', examController.removeRegisteredStudent)
+router.delete('/removeRegisteredStudent/:selectedExamId/:studentNo', exam.removeRegisteredStudent)
 
 module.exports = router;
