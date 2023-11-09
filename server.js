@@ -16,6 +16,7 @@ const routes = [
   require('./src/routes/studentRoutes'),
   require('./src/routes/messageRoutes'),
   require('./src/routes/examRoutes'),
+  require('./src/routes/announcementRoutes'),
 ];
 
 routes.forEach(route => app.use(route));

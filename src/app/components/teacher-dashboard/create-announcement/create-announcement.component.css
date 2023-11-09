@@ -1,0 +1,40 @@
+.text-danger {
+    font-size: 11px;
+    color: red;
+}
+
+.success-border {
+    border: 2px solid green;
+}
+
+textarea {
+    resize: none;
+}
+
+.fa-xmark {
+    margin-top: 10px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.announcements-card-body {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.announcements-card {
+    transition: transform 0.2s;
+}
+
+.announcements-card:hover {
+    transform: scale(1.03);
+}
+
+.announcements-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.announcements-card:hover .fa-xmark {
+    visibility: visible;
+}

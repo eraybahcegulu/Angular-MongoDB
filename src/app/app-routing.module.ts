@@ -5,6 +5,7 @@ import { StudentHomeComponent } from './components/student-home/student-home.com
 import { TeacherDashboardComponent } from './components/teacher-dashboard/teacher-dashboard.component';
 import { ViewStudentsComponent } from './components/teacher-dashboard/view-students/view-students.component';
 import { CreateExamComponent } from './components/teacher-dashboard/create-exam/create-exam.component';
+import { CreateAnnouncementComponent } from './components/teacher-dashboard/create-announcement/create-announcement.component';
 import { AddStudentComponent } from './components/teacher-dashboard/add-student/add-student.component';
 import { AuthGuardService } from './services/authguard.service';
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'view-students', component: ViewStudentsComponent, canActivate: [AuthGuardService], data: { roles: ['teacher'] } },
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuardService], data: { roles: ['teacher'] } },
   { path: 'create-exam', component: CreateExamComponent, canActivate: [AuthGuardService], data: { roles: ['teacher'] } },
+  { path: 'create-announcement', component: CreateAnnouncementComponent, canActivate: [AuthGuardService], data: { roles: ['teacher'] } },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

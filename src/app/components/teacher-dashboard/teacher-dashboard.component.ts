@@ -36,4 +36,8 @@ export class TeacherDashboardComponent {
     this.router.navigate(['/create-exam']);
   }
 
+  createAnnouncement(){
+    this.router.navigate(['/create-announcement']);
+  }
+
 }
