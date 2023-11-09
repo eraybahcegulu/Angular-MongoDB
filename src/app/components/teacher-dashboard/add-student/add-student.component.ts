@@ -67,7 +67,7 @@ export class AddStudentComponent{
   }
 
   editErrors(inputs: any): boolean {
-    if (inputs.value.trim().length < 1) {
+    if (inputs.value.trim().length < 3) {
       return true;
     }
     return false;

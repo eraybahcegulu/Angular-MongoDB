@@ -16,10 +16,7 @@
     outline: none;
 }
 
-.view-exams-card-body {
-    max-height: 490px;
-    overflow-y: auto;
-}
+
 
 .numbers {
     text-align: center;
@@ -34,38 +31,43 @@ input {
     font-size: 15px;
 }
 
-.view-exams-card {
-    transition: transform 0.2s;
-}
-
-.view-exams-card:hover {
-    transform: scale(1.03);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-}
-
 .fa-xmark {
     margin-top: 10px;
     visibility: hidden;
     cursor: pointer;
 }
 
-.view-exams-card:hover .fa-xmark {
-    visibility: visible;
+.exams-card-body {
+    max-height: 490px;
+    overflow-y: auto;
 }
 
-.view-registered-student-card {
+.exams-card {
     transition: transform 0.2s;
 }
 
-.view-registered-student-card:hover {
+.exams-card:hover {
     transform: scale(1.03);
 }
 
-.view-registered-student-card:hover .fa-xmark {
+.exams-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.exams-card:hover .fa-xmark {
+    visibility: visible;
+}
+
+.registered-student-card {
+    transition: transform 0.2s;
+}
+
+.registered-student-card:hover {
+    transform: scale(1.03);
+}
+
+.registered-student-card:hover .fa-xmark {
     visibility: visible;
 }
 
