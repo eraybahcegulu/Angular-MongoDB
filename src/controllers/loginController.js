@@ -2,7 +2,6 @@ const jwtUtils = require('../utils/jwtUtils');
 const studentUtils = require('../utils/studentUtils');
 const teacherUtils = require('../utils/teacherUtils');
 
-
 async function loginUser(req, res) {
   const { email, password } = req.body;
   try {
@@ -32,11 +31,5 @@ async function findUser(email, password) {
   }
   return null;
 }
-
-
-
-
-
-
 
 module.exports = { loginUser };
