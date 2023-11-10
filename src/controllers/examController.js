@@ -1,4 +1,5 @@
 const examUtils = require('../utils/examUtils');
+const examValidator = require('../validators/examValidator');
 
 async function getExams(req, res) {
   try {
@@ -13,24 +14,30 @@ async function getExams(req, res) {
 async function createExam(req, res) {
   const { name, date, time, type, questionType, numberOfQuestions, duration } = req.body;
   try {
-    const examNameControl = await examUtils.findExamByName( name );
+    const examNameControl = await examUtils.findExamByName(name);
 
-    if(examNameControl)
-    {
-      res.status(400).json({ message: `${name} exam has already been created.` });
+    if (examNameControl) {
+      return res.status(400).json({ message: `${name} exam has already been created.` });
+    }
+
+    if (examValidator.validateType(type)) {
+      return res.status(400).json({ message: `${type} not found in Type options.` });
+    }
+
+    if (examValidator.validateQuestionType(questionType)) {
+      return res.status(400).json({ message: `${questionType} not found in Question Type options.` });
     }
  
-    else {
-      const newExam = await examUtils.createExam( name, date, time, type, questionType, numberOfQuestions, duration  );
-      if (newExam) {
-        res.status(200).json({ message: 'Exam created successfully.' });
-      }
+    const newExam = await examUtils.createExam(name, date, time, type, questionType, numberOfQuestions, duration);
+    if (newExam) {
+      return res.status(200).json({ message: 'Exam created successfully.' });
     }
   } catch (error) {
     console.error('Error creating exam', error);
-    res.status(500).json({ message: 'Error creating exam', error: error.message });
+    return res.status(500).json({ message: 'Error creating exam', error: error.message });
   }
 }
+
 
 async function deleteExam(req, res) {
   const examId = req.params.examId;
