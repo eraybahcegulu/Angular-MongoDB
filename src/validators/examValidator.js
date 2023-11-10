@@ -1,9 +1,12 @@
+const validTypes = ['Midterm', 'Final', 'Quiz'];
+const validQuestionTypes = ['Classic', 'Test', 'Classic + Test'];
+
 function validateType(type) {
-    return !(type === 'Midterm') && !(type === 'Final') && !(type === 'Quiz');
+    return !validTypes.includes(type);
 }
 
 function validateQuestionType(questionType) {
-    return !(questionType === 'Classic') && !(questionType === 'Test') && !(questionType === 'Classic + Test');
+    return !validQuestionTypes.includes(questionType);
 }
 
 module.exports = { validateType, validateQuestionType };
