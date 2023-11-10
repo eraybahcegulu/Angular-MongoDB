@@ -5,6 +5,7 @@ import { StudentService } from '../../../services/student.service';
 import { HandlerCreateExamService } from '../../../services/handlers/exam/createExamHandler.service';
 import { HandlerDeleteExamService } from '../../../services/handlers/exam/deleteExamHandler.service';
 import { HandlerRegisterStudentToExamService } from '../../../services/handlers/exam/registerStudentToExamHandler.service';
+import { HandlerUpdateStudentScoreService } from '../../../services/handlers/exam/updateStudentScore.service';
 const FILTER_PAG_REGEX = /[^0-9]/g;
 @Component({
   selector: 'app-create-exam',
@@ -22,6 +23,9 @@ export class CreateExamComponent implements OnInit {
 
   registerStudentToExamMessage: string = '';
   registerStudentToExamMessageType: string = '';
+
+  updateStudentScoreMessage: string = '';
+  updateStudentScoreMessageType: string = '';
 
   exams: any[] = [];
   students: any[] = [];
@@ -48,6 +52,7 @@ export class CreateExamComponent implements OnInit {
     private handlerCreateExamService: HandlerCreateExamService,
     private handlerDeleteExamService: HandlerDeleteExamService,
     private handlerRegisterStudentToExamService: HandlerRegisterStudentToExamService,
+    private handlerUpdateStudentScoreService: HandlerUpdateStudentScoreService,
   ) {
 
     this.createExamForm = this.formBuilder.group({
@@ -64,7 +69,7 @@ export class CreateExamComponent implements OnInit {
     return this.createExamForm.controls;
   }
 
-  
+
   getExams() {
     this.examService.getExams().subscribe((exams: any[]) => {
       this.exams = exams;
@@ -75,8 +80,7 @@ export class CreateExamComponent implements OnInit {
     this.getExams()
   }
 
-  getStudents()
-  {
+  getStudents() {
     this.studentService.getStudents().subscribe((students: any[]) => {
       this.students = students;
     });
@@ -122,7 +126,7 @@ export class CreateExamComponent implements OnInit {
       return Math.ceil(totalStudents / this.pageSize);
     }
   }
-  
+
   searchStudents(): void {
     if (this.searchText) {
       this.page = 1;
@@ -142,7 +146,7 @@ export class CreateExamComponent implements OnInit {
     }
   }
 
-  setSelectedExam(examId: string,  examName: string, examDate: object, examTime: object, examType: string, examQuestionType: string, examNumberOfQuestions:string, examDuration: number , examRegisteredStudents: any[]) {
+  setSelectedExam(examId: string, examName: string, examDate: object, examTime: object, examType: string, examQuestionType: string, examNumberOfQuestions: string, examDuration: number, examRegisteredStudents: any[]) {
     this.selectedExamId = examId;
     this.selectedExamName = examName;
     this.selectedExamDate = examDate;
@@ -152,11 +156,12 @@ export class CreateExamComponent implements OnInit {
     this.selectedExamQuestionType = examQuestionType;
     this.selectedExamDuration = examDuration;
     this.selectedExamRegisteredStudents = examRegisteredStudents;
+    this.getExams();
     this.getStudentsForSelectedExam();
     this.page = 1;
   }
 
-  createExam(){
+  createExam() {
     if (this.createExamForm.invalid) {
       return;
     }
@@ -196,17 +201,16 @@ export class CreateExamComponent implements OnInit {
   }
 
   editErrors(inputs: any): boolean {
-    if (inputs.value.trim().length < 3 ) {
+    if (inputs.value.trim().length < 3) {
       return true;
     }
     return false;
   }
 
-  deleteExam(examId:any)
-  {
+  deleteExam(examId: any) {
     this.examService.deleteExam(examId).subscribe(
       () => {
-        this.getExams()   
+        this.getExams()
       },
       (error) => {
         this.getExams()
@@ -221,8 +225,7 @@ export class CreateExamComponent implements OnInit {
     )
   }
 
-  getStudentsForSelectedExam()
-  {
+  getStudentsForSelectedExam() {
     if (this.selectedExamId) {
       this.examService.getStudentsForSelectedExam(this.selectedExamId).subscribe((selectedExamRegisteredStudents: any[]) => {
         this.selectedExamRegisteredStudents = selectedExamRegisteredStudents;
@@ -230,12 +233,11 @@ export class CreateExamComponent implements OnInit {
     }
   }
 
-  registerStudentForExam(examId: string, studentNo: number)
-  {  
+  registerStudentForExam(examId: string, studentNo: number) {
     const studentNoData = {
       studentNo: studentNo
     };
-    this.examService.registerStudentToExam(examId, studentNoData ).subscribe(
+    this.examService.registerStudentToExam(examId, studentNoData).subscribe(
       (response) => {
         this.getStudentsForSelectedExam();
         const registerStudentToExamResponse = this.handlerRegisterStudentToExamService.handleRegisterStudentToExamResponse(response);
@@ -263,11 +265,47 @@ export class CreateExamComponent implements OnInit {
   }
 
 
-  removeRegisteredStudent(selectedExamId: string, studentNo : number){
+  removeRegisteredStudent(selectedExamId: string, studentNo: number) {
     this.examService.removeRegisteredStudent(selectedExamId, studentNo).subscribe(
       () => {
-        this.getStudentsForSelectedExam() 
+        this.getStudentsForSelectedExam()
       }
     )
+  }
+  startEditing(registeredStudent: any) {
+    registeredStudent.isEditing = true;
+  }
+
+  editErrorsScore(registeredStudent: any): boolean {
+    if (registeredStudent.score > 100 || registeredStudent.score < 0) {
+      return true;
+    }
+    return false;
+  }
+
+  saveEditedRegisteredStudent(registeredStudent: any) {
+
+    registeredStudent.isEditing = false;
+    const updatedScoreData = {
+      score: registeredStudent.score,
+    };
+
+    this.examService.updateStudentScore(this.selectedExamId, registeredStudent._id, updatedScoreData).subscribe(
+      (response) => {    
+        this.getExams();
+      },
+      (error) => {
+        const updateStudentScoreError = this.handlerUpdateStudentScoreService.handleUpdateStudentScoreError(error);
+        this.updateStudentScoreMessage = updateStudentScoreError.message;
+        this.updateStudentScoreMessageType = updateStudentScoreError.type;
+        setTimeout(() => {
+          this.updateStudentScoreMessage = '';
+          this.updateStudentScoreMessageType = '';
+          location.reload();
+        }, 3000);
+        this.getExams();
+        this.getStudentsForSelectedExam();
+      }
+    );
   }
 }

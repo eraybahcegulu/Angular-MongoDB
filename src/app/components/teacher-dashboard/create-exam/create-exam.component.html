@@ -34,8 +34,8 @@
                                     <span><strong>Date is required</strong></span>
                                 </div>
 
-                                <ngb-timepicker class="custom-timepicker" formControlName="time"
-                                    [seconds]="false" [readonlyInputs]="true" size="small">
+                                <ngb-timepicker class="custom-timepicker" formControlName="time" [seconds]="false"
+                                    [readonlyInputs]="true" size="small">
                                 </ngb-timepicker>
                                 <div class="text-danger" *ngIf="formControls['time'].hasError('required')">
                                     <span><strong>Time is required</strong></span>
@@ -57,8 +57,9 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <select [ngClass]="{'success-border': !formControls['questionType'].hasError('required')}"
-                                class="form-select" id="questionType" formControlName="questionType">
+                                <select
+                                    [ngClass]="{'success-border': !formControls['questionType'].hasError('required')}"
+                                    class="form-select" id="questionType" formControlName="questionType">
                                     <option value="" disabled selected>Select Type</option>
                                     <option>Classic</option>
                                     <option>Test</option>
@@ -69,30 +70,32 @@
                                 </div>
                             </div>
                         </div>
-            
+
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
                                     <input
                                         [ngClass]="{'success-border': !formControls['numberOfQuestions'].hasError('required') && !formControls['numberOfQuestions'].hasError('max') && !formControls['numberOfQuestions'].hasError('min')}"
-                                        placeholder="Number of Questions" formControlName="numberOfQuestions" type="number" #inputNumberOfQuestions
-                                        class="form-control no-spinners" required>
-                                    <div class="text-danger" *ngIf="formControls['numberOfQuestions'].hasError('required')">
+                                        placeholder="Number of Questions" formControlName="numberOfQuestions"
+                                        type="number" #inputNumberOfQuestions class="form-control no-spinners" required>
+                                    <div class="text-danger"
+                                        *ngIf="formControls['numberOfQuestions'].hasError('required')">
                                         <span> <strong> Number Of Questions required </strong> </span>
                                     </div>
                                     <div class="text-danger"
                                         *ngIf="formControls['numberOfQuestions'].hasError('max') || formControls['numberOfQuestions'].hasError('min')">
-                                        <span> <strong> Number Of Questions Number must be between 1-100 </strong> </span>
+                                        <span> <strong> Number Of Questions Number must be between 1-100 </strong>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div class="col">
                                 <div class="mb-3">
                                     <input
                                         [ngClass]="{'success-border': !formControls['duration'].hasError('required') && !formControls['duration'].hasError('max') && !formControls['duration'].hasError('min')}"
-                                        placeholder="Duration (min)" formControlName="duration" type="number" #inputDuration
-                                        class="form-control no-spinners" required>
+                                        placeholder="Duration (min)" formControlName="duration" type="number"
+                                        #inputDuration class="form-control no-spinners" required>
                                     <div class="text-danger" *ngIf="formControls['duration'].hasError('required')">
                                         <span> <strong> Duration required </strong> </span>
                                     </div>
@@ -103,15 +106,15 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <button type="submit" [disabled]="createExamForm.invalid || editErrors(inputName)"
                             class="btn btn-sm btn-primary">Create</button>
-                            <div class="container mt-3" *ngIf="createExamMessage">
-                                <div class="createExamMessage" 
+                        <div class="container mt-3" *ngIf="createExamMessage">
+                            <div class="createExamMessage"
                                 [ngClass]="createExamMessageType === 'success' ? 'alert alert-success' : (createExamMessageType === 'danger' ? 'alert alert-danger' : '')">
                                 <strong>{{ createExamMessage }}</strong>
-                                </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -123,7 +126,7 @@
                 </div>
                 <div class="card-body exams-card-body text-center">
                     <div class="container">
-                        <div *ngIf ="exams.length === 0">
+                        <div *ngIf="exams.length === 0">
                             <p class="alert alert-danger">
                                 <strong> Exam not found. </strong>
                             </p>
@@ -133,20 +136,27 @@
                                 <div class="card-header exams-card-header">
 
                                     <strong> {{ exam.name }} {{ exam.type }}</strong>
-                                    <i (click)="deleteExam(exam._id)" class="fa-solid fa-xmark fa-lg" style="color: #ff0000;"></i>
+                                    <i (click)="deleteExam(exam._id)" class="fa-solid fa-xmark fa-lg"
+                                        style="color: #ff0000;"></i>
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Date:</strong> {{ exam.date.day + '.' + exam.date.month + '.' + exam.date.year}}</p>
-                                    <p><strong>Time:</strong> {{ (exam.time.hour < 10 ? '0' + exam.time.hour : exam.time.hour) + ':' + (exam.time.minute < 10 ? '0' + exam.time.minute : exam.time.minute) }}</p>
-                                    <p><strong>Question Type:</strong> {{ exam.questionType }}</p>
-                                    <p><strong>Number of Questions:</strong> {{ exam.numberOfQuestions }}</p>
-                                    <p><strong>Duration:</strong> {{ exam.duration }} minutes</p>
+                                    <p><strong>Date:</strong> {{ exam.date.day + '.' + exam.date.month + '.' +
+                                        exam.date.year}}</p>
+                                    <p><strong>Time:</strong> {{ (exam.time.hour < 10 ? '0' + exam.time.hour :
+                                            exam.time.hour) + ':' + (exam.time.minute < 10 ? '0' + exam.time.minute :
+                                            exam.time.minute) }}</p>
+                                            <p><strong>Question Type:</strong> {{ exam.questionType }}</p>
+                                            <p><strong>Number of Questions:</strong> {{ exam.numberOfQuestions }}</p>
+                                            <p><strong>Duration:</strong> {{ exam.duration }} minutes</p>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-info"
-                                    (click)="setSelectedExam(exam._id, exam.name, exam.date, exam.time, exam.type, exam.questionType, exam.numberOfQuestions, exam.duration , exam.registeredStudents)"
-                                    data-toggle="modal" data-target="#viewStudentsModal"
-                                    >View Students</button>
+                                    <button type="button" class="btn btn-info mt-2 mb-2 card-footer-buttons"
+                                        (click)="setSelectedExam(exam._id, exam.name, exam.date, exam.time, exam.type, exam.questionType, exam.numberOfQuestions, exam.duration , exam.registeredStudents)"
+                                        data-toggle="modal" data-target="#viewStudentsModal">View Students</button>
+
+                                    <button type="button" class="btn btn-primary grade-button card-footer-buttons"
+                                        (click)="setSelectedExam(exam._id, exam.name, exam.date, exam.time, exam.type, exam.questionType, exam.numberOfQuestions, exam.duration , exam.registeredStudents)"
+                                        data-toggle="modal" data-target="#viewStudentsGrades">Results</button>
                                 </div>
                             </div>
                         </div>
@@ -154,9 +164,9 @@
                 </div>
             </div>
             <div class="container mt-2" *ngIf="deleteExamMessage">
-                <div class="deleteExamMessage" 
-                [ngClass]="deleteExamMessageType === 'success' ? 'alert alert-success' : (deleteExamMessageType === 'danger' ? 'alert alert-danger' : '')">
-                <strong>{{ deleteExamMessage }} </strong>
+                <div class="deleteExamMessage"
+                    [ngClass]="deleteExamMessageType === 'success' ? 'alert alert-success' : (deleteExamMessageType === 'danger' ? 'alert alert-danger' : '')">
+                    <strong>{{ deleteExamMessage }} </strong>
                 </div>
             </div>
         </div>
@@ -169,29 +179,33 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewStudentsModalLabel"> <strong> {{selectedExamName}} {{selectedExamType}}</strong></h5>
-                <button (click)="getStudents()" type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal" data-target="#registerStudentsToExamModal"> Add Student </button>
+                <h5 class="modal-title" id="viewStudentsModalLabel"> <strong> {{selectedExamName}}
+                        {{selectedExamType}}</strong></h5>
+                <button (click)="getStudents()" type="button" class="btn btn-warning" data-toggle="modal"
+                    data-dismiss="modal" data-target="#registerStudentsToExamModal"> Add Student </button>
             </div>
             <h5 class="text-center mt-3"> <strong> REGISTERED STUDENTS </strong> </h5>
             <div class="modal-body text-center">
-            <div class="container">
-                <div *ngFor="let registeredStudent of selectedExamRegisteredStudents" class="student-card mb-5">
-                    <div class="card registered-student-card student-card">
-                        <div class="card-body">
-                            <h5> Student Number</h5>
-                            <p><strong> {{ registeredStudent.no }} </strong></p>
-                            <i (click)="removeRegisteredStudent(selectedExamId , registeredStudent.no)" class="fa-solid fa-xmark fa-lg" style="color: #ff0000;"></i>
+                <div class="container">
+                    <div *ngFor="let registeredStudent of selectedExamRegisteredStudents" class="student-card mb-5">
+                        <div class="card registered-student-card student-card">
+                            <div class="card-body">
+                                <h5> Student Number</h5>
+                                <p><strong> {{ registeredStudent.no }} </strong></p>
+                                <i (click)="removeRegisteredStudent(selectedExamId , registeredStudent.no)"
+                                    class="fa-solid fa-xmark fa-lg" style="color: #ff0000;"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-                <div *ngIf ="selectedExamRegisteredStudents.length === 0">
+                <div *ngIf="selectedExamRegisteredStudents.length === 0">
                     <p class="alert alert-danger">
-                        No student registered for the <strong> {{selectedExamName}} {{selectedExamType}} </strong> exam was found
+                        No student registered for the <strong> {{selectedExamName}} {{selectedExamType}} </strong> exam
+                        was found
                     </p>
                 </div>
             </div>
-            
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
             </div>
@@ -199,30 +213,39 @@
     </div>
 </div>
 
-<div class="modal fade" id="registerStudentsToExamModal" tabindex="-1" role="dialog" aria-labelledby="registerStudentsToExamModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerStudentsToExamModal" tabindex="-1" role="dialog"
+    aria-labelledby="registerStudentsToExamModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registerStudentsToExamModalLabel"> <strong> {{selectedExamName}} {{selectedExamType}} </strong></h5>
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal" data-target="#viewStudentsModal"> View Students </button>
+                <h5 class="modal-title" id="registerStudentsToExamModalLabel"> <strong> {{selectedExamName}}
+                        {{selectedExamType}} </strong></h5>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal"
+                    data-target="#viewStudentsModal"> View Students </button>
             </div>
 
-            <h5 class="text-center mt-3"> <strong> STUDENTS  </strong> </h5>
+            <h5 class="text-center mt-3"> <strong> STUDENTS </strong> </h5>
 
             <div class="div-search-input">
-                <input class="search-input mb-3" type="text" [(ngModel)]="searchText" (input)="searchStudents()" placeholder="Search Student" />
+                <input class="search-input mb-3" type="text" [(ngModel)]="searchText" (input)="searchStudents()"
+                    placeholder="Search Student" />
             </div>
 
-            <ngb-pagination style="margin:10px;" [collectionSize]="getTotalPages() * pageSize" [(page)]="page" [pageSize]="pageSize" [boundaryLinks]="true">
+            <ngb-pagination style="margin:10px;" [collectionSize]="getTotalPages() * pageSize" [(page)]="page"
+                [pageSize]="pageSize" [boundaryLinks]="true">
                 <ng-template ngbPaginationPages let-page let-pages="pages">
                     <li class="ngb-custom-pages-item " *ngIf="pages.length > 0 ">
                         <div class="d-flex flex-nowrap px-2 ">
-                            <label id="paginationInputLabel" for="paginationInput" class="col-form-label me-2 ms-1">Page</label>
-                            <input #i type="text" inputmode="numeric" pattern="[0-9]*" class="form-control custom-pages-input"
-                                id="paginationInput" [value]="page" (keyup.enter)="selectPage(i.value)"
-                                (blur)="selectPage(i.value)" (input)="formatInput($any($event).target)"
-                                aria-labelledby="paginationInputLabel paginationDescription" style="text-align: center; width: 3.0rem" />
-                            <span id="paginationDescription" class="col-form-label text-nowrap px-2"> of {{getTotalPages()}} </span>
+                            <label id="paginationInputLabel" for="paginationInput"
+                                class="col-form-label me-2 ms-1">Page</label>
+                            <input #i type="text" inputmode="numeric" pattern="[0-9]*"
+                                class="form-control custom-pages-input" id="paginationInput" [value]="page"
+                                (keyup.enter)="selectPage(i.value)" (blur)="selectPage(i.value)"
+                                (input)="formatInput($any($event).target)"
+                                aria-labelledby="paginationInputLabel paginationDescription"
+                                style="text-align: center; width: 3.0rem" />
+                            <span id="paginationDescription" class="col-form-label text-nowrap px-2"> of
+                                {{getTotalPages()}} </span>
                         </div>
                     </li>
                 </ng-template>
@@ -232,24 +255,26 @@
                 <div *ngFor="let student of getStudentsOnCurrentPage()" class="student-card mb-5">
                     <div class="container">
                         <div class="card student-card">
-                            <div class="card-header">
+                            <div class="card-header exams-card-header">
                                 <p><strong>Student Number:</strong> {{ student.no }}</p>
                                 <div>
-                                  <p *ngIf="isStudentRegistered(student.no)" class="badge bg-success">Registered </p>
-                                  <p *ngIf="!isStudentRegistered(student.no)" class="badge bg-danger">Not Registered </p>
+                                    <p *ngIf="isStudentRegistered(student.no)" class="badge bg-success">Registered </p>
+                                    <p *ngIf="!isStudentRegistered(student.no)" class="badge bg-danger">Not Registered
+                                    </p>
                                 </div>
-                              </div>
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ student.name }} {{ student.surname }}</h5>
                             </div>
-    
+
                             <div class="card-footer">
-                                <button type="button" (click)="registerStudentForExam(selectedExamId , student.no)" class="btn btn-primary btn-sm">Register</button>
+                                <button type="button" (click)="registerStudentForExam(selectedExamId , student.no)"
+                                    class="btn btn-primary btn-sm">Register</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div *ngIf ="getStudentsOnCurrentPage().length === 0">
+                <div *ngIf="getStudentsOnCurrentPage().length === 0">
                     <p class="alert alert-danger">
                         <strong> Student not available </strong>
                     </p>
@@ -260,9 +285,93 @@
             </div>
 
             <div class="container mt-2" *ngIf="registerStudentToExamMessage">
-                <div class="registerStudentToExamMessage" 
-                [ngClass]="registerStudentToExamMessageType === 'success' ? 'alert alert-success' : (registerStudentToExamMessageType === 'danger' ? 'alert alert-danger' : '')">
-                <strong>{{ registerStudentToExamMessage }} </strong>
+                <div class="registerStudentToExamMessage"
+                    [ngClass]="registerStudentToExamMessageType === 'success' ? 'alert alert-success' : (registerStudentToExamMessageType === 'danger' ? 'alert alert-danger' : '')">
+                    <strong>{{ registerStudentToExamMessage }} </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewStudentsGrades" tabindex="-1" role="dialog" aria-labelledby="viewStudentsGradesLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewStudentsGradesLabel"> <strong> {{selectedExamName}}
+                        {{selectedExamType}}</strong></h5>
+            </div>
+            <h5 class="text-center mt-3"> <strong> REGISTERED STUDENTS </strong> </h5>
+            <div class="modal-body text-center">
+                <div class="container">
+                    <table class="table table-bordered bordered-light">
+                        <thead>
+                            <tr class="table-dark">
+                                <th>Student Number</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-secondary"
+                                *ngFor="let registeredStudent of selectedExamRegisteredStudents">
+
+
+                                <td>{{ registeredStudent.no }}
+
+                                </td>
+                                <td>
+                                    <div style="margin-left: 30%; "
+                                        class="d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <ng-container  *ngIf="!registeredStudent.isEditing; else scoreField">
+                                                {{ registeredStudent.score }}
+                                            </ng-container>
+                                            <ng-template #scoreField>
+                                                <input
+                                                    [ngClass]="!(registeredStudent.score > 100 || 0 > registeredStudent.score) ? 'success-border': 'error-border'"
+                                                    class="table-input no-spinners numbers" type="number"
+                                                    [(ngModel)]="registeredStudent.score" maxlength="3">
+                                            </ng-template>
+                                        </span>
+                                        <div class="text-end">
+                                            <ng-container *ngIf="!registeredStudent.isEditing; else editField">
+                                                <i (click)="startEditing(registeredStudent)"
+                                                    class="fa-solid fa-user-pen" style="color: #205dc5;"></i>
+                                            </ng-container>
+                                            <ng-template #editField>
+                                                <i (click)="!editErrorsScore(registeredStudent) && saveEditedRegisteredStudent(registeredStudent)"
+                                                    class="fa-solid fa-check fa-lg" style="color: #13903d;"
+                                                    [ngClass]="{'disabled-icon': editErrorsScore(registeredStudent)}"
+                                                    [style.cursor]="editErrorsScore(registeredStudent) ? 'not-allowed' : 'pointer'">
+                                                </i>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="selectedExamRegisteredStudents.length === 0">
+                                <td colspan="2">
+                                    <div class="container">
+                                        No student registered for the <strong> {{selectedExamName}} {{selectedExamType}}
+                                        </strong> exam was found
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
+            </div>
+            <div class="container">
+                <div class="updateStudentScoreMessage"
+                    [ngClass]="updateStudentScoreMessageType === 'success' ? 'alert alert-success' : (updateStudentScoreMessageType === 'danger' ? 'alert alert-danger' : '')">
+                    <strong>{{ updateStudentScoreMessage }}</strong>
                 </div>
             </div>
         </div>

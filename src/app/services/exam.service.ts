@@ -33,4 +33,8 @@ export class ExamService {
   removeRegisteredStudent(selectedExamId: string, studentNo: number) {
     return this.http.delete(`${this.apiUrl}/removeRegisteredStudent/${selectedExamId}/${studentNo}`);
   }
+
+  updateStudentScore(selectedExamId: string, studentId: string, updatedScoreData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/updateStudentScore/${selectedExamId}/${studentId}`, updatedScoreData);
+  }
 }

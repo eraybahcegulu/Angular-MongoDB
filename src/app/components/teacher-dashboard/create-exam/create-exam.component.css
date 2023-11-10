@@ -77,8 +77,6 @@ input {
 }
 
 .search-input {
-    margin: 10px;
-    padding: 10px;
     border: 1px solid #afafaf;
     border-radius: 5px;
     outline: none;
@@ -86,4 +84,36 @@ input {
 
 .search-input:focus {
     border-color: #007bff;
+}
+
+.card-footer-buttons {
+    margin: 5px;
+
+}
+
+.fa-user-pen {
+    cursor: pointer;
+}
+
+.fa-check {
+    cursor: pointer;
+}
+
+
+.table-input {
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    outline: none;
+}
+
+.success-border {
+    border: 2px solid green;
+}
+
+.error-border {
+    border: 2px solid red;
+}
+
+.disabled-icon {
+    opacity: 0.3;
 }

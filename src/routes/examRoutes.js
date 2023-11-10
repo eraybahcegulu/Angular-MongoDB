@@ -14,4 +14,6 @@ router.post('/registerStudentToExam/:examId', exam.registerStudentToExam);
 
 router.delete('/removeRegisteredStudent/:selectedExamId/:studentNo', exam.removeRegisteredStudent)
 
+router.put('/updateStudentScore/:selectedExamId/:studentId', exam.updateStudentScore)
+
 module.exports = router;

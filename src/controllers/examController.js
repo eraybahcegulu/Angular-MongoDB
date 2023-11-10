@@ -120,4 +120,34 @@ async function removeRegisteredStudent(req, res) {
   }
 }
 
-module.exports = { getExams, createExam, deleteExam , getStudentsForSelectedExam, registerStudentToExam, removeRegisteredStudent};
+
+async function updateStudentScore(req, res) {
+  const studentId = req.params.studentId;
+  const selectedExamId = req.params.selectedExamId;
+  const { score } = req.body;
+
+  try {
+    const exam = await examUtils.findExamById(selectedExamId);
+
+    if (!exam) {
+      return res.status(400).json({ message: 'Exam not found.' });
+    }
+
+    const registeredStudent = exam.registeredStudents.find(registeredStudent => registeredStudent._id.equals(studentId));
+
+    if (!registeredStudent) {
+      return res.status(400).json({ message: 'Student not found in the selected exam.' });
+    }
+
+    registeredStudent.score = score;
+
+    await exam.save();
+
+    return res.status(200).json({ message: 'Student score updated successfully.' });
+  } catch (error) {
+    console.error('Error updating student score', error);
+    res.status(500).json({ message: 'Error updating student score', error: error.message });
+  }
+}
+
+module.exports = { getExams, createExam, deleteExam , getStudentsForSelectedExam, registerStudentToExam, removeRegisteredStudent , updateStudentScore};
