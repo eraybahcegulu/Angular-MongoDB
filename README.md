@@ -1,5 +1,3 @@
-# StudentManagementSystem Angular-NodeExpress-MongoDB-Bootstrap
-
 ![1](https://github.com/eraybahcegulu/Student-Management-System-Angular-Express-MongoDB/assets/84785201/616715c1-6b7a-4ad8-ab8a-ce0848755631)
 
 ![2](https://github.com/eraybahcegulu/Student-Management-System-Angular-Express-MongoDB/assets/84785201/a612f626-6dd5-44a6-95ed-7b07337eccbd)
