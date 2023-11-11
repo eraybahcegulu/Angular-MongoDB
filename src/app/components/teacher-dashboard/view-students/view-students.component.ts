@@ -15,6 +15,7 @@ export class ViewStudentsComponent implements OnInit {
 
   students: any[] = [];
   filteredStudents: any[] = [];
+
   page = 1;
   pageSize = 5;
   message: string = '';
@@ -24,6 +25,8 @@ export class ViewStudentsComponent implements OnInit {
   selectedStudentName: any;
   selectedStudentSurname: any;
   selectedStudentMessages: any[] = [];
+
+  selectedStudentExams: any[] = [];
 
   deleteStudentMessage: string = '';
   deleteStudentMessageType: string = '';
@@ -114,14 +117,33 @@ export class ViewStudentsComponent implements OnInit {
     input.value = input.value.replace(FILTER_PAG_REGEX, '');
   }
 
-  setSelectedStudent(studentId: string, studentNo: number, studentEmail: string, studentName: string, studentSurname: string, studentMessages: any[]) {
-    this.selectedStudentId = studentId;
-    this.selectedStudentNo = studentNo;
-    this.selectedStudentEmail = studentEmail;
-    this.selectedStudentName = studentName;
-    this.selectedStudentSurname = studentSurname;
-    this.selectedStudentMessages = studentMessages;
-    this.getMessagesForSelectedStudent() 
+  setSelectedStudentMessage(student: any) {
+    this.selectedStudentId = student._id;
+    this.selectedStudentNo = student.no;
+    this.selectedStudentEmail = student.email;
+    this.selectedStudentName = student.name;
+    this.selectedStudentSurname = student.surname;
+    this.selectedStudentMessages = student.messages;
+    this.getMessagesForSelectedStudent()
+  }
+
+  setSelectedStudentExams(student: any) {
+    this.selectedStudentId = student._id;
+    this.selectedStudentNo = student.no;
+    this.selectedStudentEmail = student.email;
+    this.selectedStudentName = student.name;
+    this.selectedStudentSurname = student.surname;
+    this.selectedStudentMessages = student.messages;
+    this.getExamsForSelectedStudent()
+  }
+
+  setSelectedStudentDelete(student: any) {
+    this.selectedStudentId = student._id;
+    this.selectedStudentNo = student.no;
+    this.selectedStudentEmail = student.email;
+    this.selectedStudentName = student.name;
+    this.selectedStudentSurname = student.surname;
+    this.selectedStudentMessages = student.messages;
   }
 
   sendMessage(selectedStudentId: string) {
@@ -160,6 +182,14 @@ export class ViewStudentsComponent implements OnInit {
     if (this.selectedStudentId) {
       this.messageService.getMessagesForStudent(this.selectedStudentId).subscribe((messages: any[]) => {
         this.selectedStudentMessages = messages;
+      });
+    }
+  }
+
+  getExamsForSelectedStudent() {
+    if (this.selectedStudentNo) {
+      this.studentService.getExamsForSelectedStudent(this.selectedStudentNo).subscribe((exams: any[]) => {
+        this.selectedStudentExams = exams;
       });
     }
   }

@@ -11,14 +11,6 @@ const studentSchema = new mongoose.Schema({
   email: String,
   no: Number,
   password: String,
-  midterm: {
-    type: String,
-    default: '-'
-  },
-  final: {
-    type: String,
-    default: '-'
-  },
   absenteeism: {
     type: String,
     default: '-'

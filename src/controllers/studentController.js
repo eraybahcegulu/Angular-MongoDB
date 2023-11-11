@@ -11,6 +11,40 @@ async function getStudents(req, res) {
   }
 }
 
+
+async function getExamsForSelectedStudent(req, res) {
+  const studentNo = req.params.studentNo;
+
+  try {
+    const existingStudent = await studentUtils.findStudentByNo(studentNo);
+    if (!existingStudent) {
+      return res.status(404).json({ status: 404, message: 'Student not found' });
+    }
+
+    const registeredExams = await examUtils.getExamsForSelectedStudent(studentNo);
+    const registeredExamsScores = await examUtils.getScoresForSelectedStudent(studentNo);
+    
+    const examsWithScores = registeredExams.map((exam) => {
+      const matchingScore = registeredExamsScores.find((score) => score._id.equals(exam._id)); 
+      const score = matchingScore.registeredStudents[0].score;
+
+      return {
+        ...exam.toObject(),
+        score
+      };
+    });
+
+    console.log(examsWithScores)
+
+    res.json( examsWithScores );
+     
+  } catch (error) {
+    console.error('Error getting exams for student', error);
+    res.status(500).json({ status: 500, message: 'Error getting exams for student', error: error.message });
+  }
+}
+
+
 async function addStudent(req, res) {
   const { name, surname, email, no, password } = req.body;
   try {
@@ -69,7 +103,7 @@ async function deleteStudent(req, res) {
 async function updateStudent(req, res) {
   const studentId = req.params.studentId;
 
-  const { no, email, password, name, surname, midterm, final, absenteeism } = req.body;
+  const { no, email, password, name, surname, absenteeism } = req.body;
 
   try {
     const studentNoControl = await studentUtils.findStudentByNo(no);
@@ -114,8 +148,6 @@ async function updateStudent(req, res) {
     existingStudent.password = password;
     existingStudent.name = name;
     existingStudent.surname = surname;
-    existingStudent.midterm = midterm;
-    existingStudent.final = final;
     existingStudent.absenteeism = absenteeism;
 
     const updatedStudent = await existingStudent.save();
@@ -135,4 +167,4 @@ async function updateStudent(req, res) {
 
 
 
-module.exports = { getStudents, addStudent, deleteStudent, updateStudent };
+module.exports = { getStudents, getExamsForSelectedStudent, addStudent, deleteStudent, updateStudent };

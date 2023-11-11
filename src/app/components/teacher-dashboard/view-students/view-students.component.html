@@ -36,8 +36,6 @@
                     <th>Password</th>
                     <th>Name</th>
                     <th>Surname</th>
-                    <th>Midterm Exam</th>
-                    <th>Final Exam</th>
                     <th>Absenteeism</th>
                     <th>Actions</th>
                 </tr>
@@ -123,37 +121,6 @@
                         </ng-template>
                     </td>
                     <td>
-                        <ng-container *ngIf="!student.isEditing; else midtermField">
-                            {{ student.midterm }}
-                        </ng-container>
-                        <ng-template #midtermField>
-                            <div>
-                                <span>
-                                    <mat-error *ngIf="student.midterm > 100"> <strong> Midterm can be max 100 </strong>
-                                    </mat-error>
-                                </span>
-                            </div>
-                            <input [ngClass]="!(student.midterm > 100) ? 'success-border': 'error-border'"
-                                class="table-input no-spinners numbers" type="number" [(ngModel)]="student.midterm"
-                                maxlength="3">
-                        </ng-template>
-                    </td>
-                    <td>
-                        <ng-container *ngIf="!student.isEditing; else finalField">
-                            {{ student.final }}
-                        </ng-container>
-                        <ng-template #finalField>
-                            <div>
-                                <span>
-                                    <mat-error *ngIf="student.final > 100"> <strong> Final can be max 100 </strong>
-                                    </mat-error>
-                                </span>
-                            </div>
-                            <input [ngClass]="!(student.final > 100) ? 'success-border' : 'error-border'"
-                                class="table-input no-spinners numbers" type="number" [(ngModel)]="student.final">
-                        </ng-template>
-                    </td>
-                    <td>
                         <ng-container *ngIf="!student.isEditing; else absenteeismField">
                             {{ student.absenteeism }}
                         </ng-container>
@@ -174,10 +141,13 @@
                             <ng-container *ngIf="!student.isEditing; else editField">
                                 <a type="button" class="btn btn-primary" (click)="startEditing(student)">Edit</a>
                                 <a type="button" class="btn btn-info" 
-                                (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname, student.messages)"
+                                (click)="setSelectedStudentMessage(student)"
                                 data-toggle="modal" data-target="#sendMessageModal">Message</a>
+                                <a type="button" class="btn btn-warning" 
+                                (click)="setSelectedStudentExams(student)"
+                                data-toggle="modal" data-target="#examsModal">Exams</a>
                                 <a type="button" class="btn btn-danger"
-                                    (click)="setSelectedStudent(student._id, student.no, student.email, student.name, student.surname, student.messages)"
+                                    (click)="setSelectedStudentDelete(student)"
                                     data-toggle="modal" data-target="#deleteStudentModal">Delete</a>
                             </ng-container>
                             <ng-template #editField>
@@ -259,8 +229,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="sendMessageModalLabel"> <strong> Send Message </strong></h5>
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-dismiss="modal" data-target="#viewMessagesModal"> View Messages <strong> ({{selectedStudentMessages.length}}) </strong>  </button>
-            </div>
+             
+                <button type="button" class="btn btn-warning position-relative" data-toggle="modal" data-dismiss="modal" data-target="#viewMessagesModal">
+                    View Sent Messages
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{selectedStudentMessages.length}}
+                      <span class="visually-hidden">unread messages</span>
+                    </span>
+                  </button>
+                </div>
 
             <div class="modal-body">
                 <h5> <strong> Student information </strong> </h5>
@@ -347,6 +324,59 @@
                 </div>
             </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="examsModal" tabindex="-1" role="dialog" aria-labelledby="examsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="examsModalLabel"> <strong> Registered Exams </strong></h5>
+            </div>
+            <div class="modal-body">
+                <h5> <strong> Student Information </strong> </h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <strong>No:</strong> {{selectedStudentNo}}
+                    </li>
+                    <li>
+                        <strong>Email:</strong> {{selectedStudentEmail}}
+                    </li>
+                    <li>
+                        <strong>Name:</strong> {{selectedStudentName}}
+                    </li>
+                    <li>
+                        <strong>Surname:</strong> {{selectedStudentSurname}}
+                    </li>
+                </ul>
+
+                <div>
+                    <table class="table table-bordered ">
+                        <thead>
+                            <tr class="table-secondary">
+                                <th scope="col">Exam</th>
+                                <th scope="col">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light" *ngFor="let exam of selectedStudentExams">
+                                <td>{{ exam.name }} {{ exam.type }}</td>
+                                <td>{{ exam.score }}</td>
+                            </tr>
+                            <tr *ngIf="selectedStudentExams.length === 0">
+                                <td colspan="2">
+                                    <strong> This student is not registered for any exams. </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary active" data-dismiss="modal">Close</button>
             </div>

@@ -14,6 +14,10 @@ export class StudentService {
     return this.http.get(`${this.apiUrl}/students`);
   }
 
+  getExamsForSelectedStudent(studentNo: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/students/${studentNo}/exams`);
+  }
+
   addStudent(studentData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/addStudent`, studentData);
   } 
