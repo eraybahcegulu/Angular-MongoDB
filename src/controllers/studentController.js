@@ -25,8 +25,8 @@ async function getExamsForSelectedStudent(req, res) {
     const registeredExamsScores = await examUtils.getScoresForSelectedStudent(studentNo);
     
     const examsWithScores = registeredExams.map((exam) => {
-      const matchingScore = registeredExamsScores.find((score) => score._id.equals(exam._id)); 
-      const score = matchingScore.registeredStudents[0].score;
+      const matchingExam = registeredExamsScores.find((score) => score._id.equals(exam._id)); 
+      const score = matchingExam.registeredStudents[0].score;
 
       return {
         ...exam.toObject(),
