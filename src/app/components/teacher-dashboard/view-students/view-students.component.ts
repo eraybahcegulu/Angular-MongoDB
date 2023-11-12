@@ -228,6 +228,12 @@ export class ViewStudentsComponent implements OnInit {
           $('#deleteStudentModal').modal('hide');
           this.studentService.getStudents().subscribe((students: any[]) => {
             this.students = students;
+            if(this.searchText)
+            {
+              this.filteredStudents = this.students;
+              this.searchText = '';
+            }
+
           });
         });
       $('#deleteStudentModal').modal('hide');
