@@ -34,8 +34,6 @@ async function getExamsForSelectedStudent(req, res) {
       };
     });
 
-    console.log(examsWithScores)
-
     res.json( examsWithScores );
      
   } catch (error) {
