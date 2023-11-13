@@ -52,7 +52,7 @@
                                 <strong> Announcement not found. </strong>
                             </p>
                         </div>
-                        <div class="mt-3" *ngFor="let announcement of announcements">
+                        <div class="mt-3" *ngFor="let announcement of announcements.slice().reverse()">
                             <div class="card announcements-card mb-5">
                                 <div class="card-header announcements-card-header">
                                     <div class="container text-start">
