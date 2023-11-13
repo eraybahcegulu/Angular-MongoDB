@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnnouncementService } from '../../../services/announcement.service';
-import { StudentService } from '../../../services/student.service';
 import { HandlerCreateAnnouncementService } from '../../../services/handlers/announcements/createAnnouncementHandler.service';
 import { HandlerDeleteAnnouncementService } from '../../../services/handlers/announcements/deleteAnnouncement.service';
 
@@ -23,7 +22,6 @@ export class CreateAnnouncementComponent implements OnInit{
   createAnnouncementForm: FormGroup;
   constructor(
     private announcementService: AnnouncementService,
-    private studentService: StudentService,
     private formBuilder: FormBuilder,
     private handlerCreateAnnouncementService: HandlerCreateAnnouncementService,
     private handlerDeleteAnnouncementService: HandlerDeleteAnnouncementService,
