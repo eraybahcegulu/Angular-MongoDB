@@ -1,0 +1,43 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    LOGIN
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" formControlName="email" class="form-control" id="email" required
+                                maxlength="40">
+                            <div class="text-danger" *ngIf="formControls['email'].hasError('required')">
+                                <span> <strong> Email required </strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="formControls['email'].hasError('email')">
+                               <span> <strong> Invalid email format </strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password">Password</label>
+                            <input type="password" formControlName="password" class="form-control" id="password"
+                                required maxlength="20">
+                            <div class="text-danger" *ngIf="formControls['password'].hasError('required')">
+                                <span> <strong> Password required </strong></span> 
+                            </div>
+                            <div class="text-danger" *ngIf="formControls['password'].hasError('minlength')">
+                                <span> <strong>  Password must be at least 6 characters </strong></span> 
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-3" [disabled]="loginForm.invalid">Login</button>
+
+                        <div class="login-message" *ngIf="loginMessage"
+                        [ngClass]="loginMessageType === 'success' ? 'alert alert-success' : (loginMessageType === 'danger' ? 'alert alert-danger' : '')">
+                        <strong>{{ loginMessage }}</strong>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
