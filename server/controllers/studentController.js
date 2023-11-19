@@ -1,5 +1,6 @@
 const studentUtils = require('../utils/studentUtils');
 const examUtils = require('../utils/examUtils');
+const studentValidator = require('../validators/studentValidator');
 
 async function getStudents(req, res) {
   try {
@@ -111,6 +112,31 @@ async function updateStudent(req, res) {
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
     }
+
+    if (studentValidator.validateNo(no)) {
+      return res.status(400).json({ message: 'Student Number must be between 3-15 digits' });
+    }
+
+    if (studentValidator.validateEmail(email)) {
+      return res.status(400).json({ message: 'Student Email must be between 3-40 characters' });
+    }
+
+    if (studentValidator.validatePassword(password)) {
+      return res.status(400).json({ message: 'Student Password must be between 6-20 characters' });
+    }
+
+    if (studentValidator.validateName(name)) {
+      return res.status(400).json({ message: 'Student Name must be between 3-20 characters' });
+    }
+
+    if (studentValidator.validateName(surname)) {
+      return res.status(400).json({ message: 'Student Surname must be between 3-20 characters' });
+    }
+
+    if (studentValidator.validateAbsenteeism(absenteeism)) {
+      return res.status(400).json({ message: 'Student Surname must be max 3 digits' });
+    }
+
 
     if (studentEmailControl) {
       if (studentEmailControl.email !== existingStudent.email) {

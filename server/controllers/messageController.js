@@ -1,5 +1,6 @@
 const studentUtils = require('../utils/studentUtils');
 const messageUtils = require('../utils/messageUtils');
+const messageValidator = require('../validators/messageValidator');
 
 async function sendMessage(req, res) {
   const studentId = req.params.studentId;
@@ -10,6 +11,11 @@ async function sendMessage(req, res) {
     if (!existingStudent) {
       return res.status(400).json({ message: 'Student not found.' });
     }
+
+    if (messageValidator.validateMessage(message)) {
+      return res.status(400).json({ message: 'Failed. Message must be 100 characters max.' });
+    }
+
 
     existingStudent.messages.push({ message: message });
     const savedMessage = await existingStudent.save();
