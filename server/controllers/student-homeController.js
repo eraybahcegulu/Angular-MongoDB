@@ -33,8 +33,7 @@ async function changePassword(req, res) {
             return res.status(400).json({ message: 'This password is the same as your old password' });
         }
 
-        existingStudent.password = password;
-        const changedPassword = await existingStudent.save();
+        const changedPassword = await studentUtils.findStudentByIdAndUpdate(studentId, req.body);
 
         if (changedPassword) {
             return res.status(200).json({ message: `Changed password successfully. Your new password is: ${password}` });
