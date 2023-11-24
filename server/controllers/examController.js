@@ -127,7 +127,6 @@ async function removeRegisteredStudent(req, res) {
   }
 }
 
-
 async function updateStudentScore(req, res) {
   const studentId = req.params.studentId;
   const selectedExamId = req.params.selectedExamId;
@@ -156,5 +155,28 @@ async function updateStudentScore(req, res) {
     res.status(500).json({ message: 'Error updating student score', error: error.message });
   }
 }
+
+/*
+async function updateStudentScore(req, res) {
+  const studentId = req.params.studentId;
+  const selectedExamId = req.params.selectedExamId;
+  const { score } = req.body;
+
+  console.log(selectedExamId);
+
+  try {
+    const updatedExam = await examUtils.findStudentByIdAndUpdateScore(selectedExamId, studentId, { score });
+
+    if (!updatedExam) {
+      return res.status(400).json({ message: 'Exam or student not found.' });
+    }
+
+    return res.status(200).json({ message: 'Student score updated successfully.' });
+  } catch (error) {
+    console.error('Error updating student score', error);
+    res.status(500).json({ message: 'Error updating student score', error: error.message });
+  }
+}
+*/
 
 module.exports = { getExams, createExam, deleteExam, getStudentsForSelectedExam, registerStudentToExam, removeRegisteredStudent, updateStudentScore };
