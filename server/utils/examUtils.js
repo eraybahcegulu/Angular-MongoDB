@@ -24,9 +24,19 @@ async function deleteExamById(_id) {
     return await Exam.deleteOne({ _id });
 }
 
+/*async function findStudentByIdAndUpdateScore(selectedExamId, studentId, newStudentData) {
+
+        return await Exam.findOneAndUpdate(
+        { _id: selectedExamId, 'registeredStudents._id': studentId },
+         { 'registeredStudents.$.score': newStudentData.score } ,
+      );
+  }
+
+*/
+
 async function createExam(name, date, time, type, questionType, numberOfQuestions, duration) {
     const newExam = new Exam({ name, date, time, type, questionType, numberOfQuestions, duration });
     const savedExam = await newExam.save();
     return savedExam;
 }
-module.exports = { getExams, getExamsForSelectedStudent, getScoresForSelectedStudent, findExamByName, findExamById, deleteExamById, createExam };
+module.exports = { getExams, getExamsForSelectedStudent, getScoresForSelectedStudent, findExamByName, findExamById, deleteExamById /*, findStudentByIdAndUpdateScore*/ , createExam };
