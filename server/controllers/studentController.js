@@ -167,14 +167,7 @@ async function updateStudent(req, res) {
       await exam.save();
     }
 
-    existingStudent.no = no;
-    existingStudent.email = email;
-    existingStudent.password = password;
-    existingStudent.name = name;
-    existingStudent.surname = surname;
-    existingStudent.absenteeism = absenteeism;
-
-    const updatedStudent = await existingStudent.save();
+    const updatedStudent = await studentUtils.findStudentByIdAndUpdate( studentId, req.body);
 
     if (updatedStudent) {
       if (controlRegisteredExams) {
